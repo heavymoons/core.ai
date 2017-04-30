@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.Remoting;
 using heavymoons.core.AI.Interfaces;
 
 namespace heavymoons.core.AI
@@ -25,8 +24,22 @@ namespace heavymoons.core.AI
             if (name == null) name = state.Name;
             if (_states.ContainsKey(name)) throw new ArgumentException($"name already registered: {name}");
             _states[name] = state;
-            state.OnRegister(this);
+            state.OnRegister(this, State);
             if (State == null) State = state;
+        }
+
+        public void UnregisterState(string name)
+        {
+            var state = GetState(name);
+            _states.Remove(name);
+        }
+
+        public void UnregisterState(Type type)
+        {
+            var states = _states.Where(state => state.Value.GetType() == type);
+            if (!states.Any()) throw new ArgumentException($"type not registered: {type.Name} {_states.Keys}");
+            if (states.Count() > 1) throw new ArgumentException($"type multiple registered: {type.Name}");
+            _states.Remove(states.First().Key);
         }
 
         public IState GetState(string name)
@@ -63,23 +76,10 @@ namespace heavymoons.core.AI
             State = GetState(type);
         }
 
-        public virtual IState CanChange(IMachine machine)
+        public IState CanChange(IMachine machine)
         {
-            return null;
+            return CanChangeCallback?.Invoke(machine);
         }
-
-        public virtual void OnRegister(IMachine machine)
-        {
-            // 子ノードとして登録するステートマシンのBlackBoardは空である必要がある
-            if (BlackBoard.HasRegistered) throw new InvalidOperationException($"BlackBoard already used");
-
-            // 親のBlackBoardを引き継ぐ
-            BlackBoard = machine.BlackBoard;
-        }
-
-        public virtual void OnExit(IMachine machine, IState state) {}
-
-        public virtual void OnChange(IMachine machine, IState state) {}
 
         public void Next(IMachine machine = null)
         {
@@ -97,6 +97,36 @@ namespace heavymoons.core.AI
             OnNext(this);
         }
 
-        public virtual void OnNext(IMachine machine) {}
+        public CanChangeDelegate CanChangeCallback;
+        public StateEvent OnRegisterEvent;
+        public StateEvent OnNextEvent;
+        public StateEvent OnExitEvent;
+        public StateEvent OnChangeEvent;
+
+        public void OnRegister(IMachine machine, IState state = null)
+        {
+            // 子ノードとして登録するステートマシンのBlackBoardは空である必要がある
+            if (BlackBoard.HasRegistered) throw new InvalidOperationException($"BlackBoard already used");
+
+            // 親のBlackBoardを引き継ぐ
+            BlackBoard = machine.BlackBoard;
+
+            OnRegisterEvent?.Invoke(machine, state);
+        }
+
+        public void OnExit(IMachine machine, IState state)
+        {
+            OnExitEvent?.Invoke(machine, state);
+        }
+
+        public void OnChange(IMachine machine, IState state)
+        {
+            OnChangeEvent?.Invoke(machine, state);
+        }
+
+        public void OnNext(IMachine machine, IState state = null)
+        {
+            OnNextEvent?.Invoke(machine, state);
+        }
     }
 }

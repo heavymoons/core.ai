@@ -13,19 +13,40 @@ namespace heavymoons.core.AI
 
         public BlackBoard BlackBoard { get; } = new BlackBoard();
 
-        public virtual void Next(IMachine machine) {OnNext(machine);}
+        public virtual void Next(IMachine machine)
+        {
+            OnNext(machine);
+        }
 
         public virtual IState CanChange(IMachine machine)
         {
-            return null;
+            return CanChangeCallback?.Invoke(machine);
         }
 
-        public virtual void OnRegister(IMachine machine) {}
+        public CanChangeDelegate CanChangeCallback;
+        public StateEvent OnRegisterEvent;
+        public StateEvent OnNextEvent;
+        public StateEvent OnExitEvent;
+        public StateEvent OnChangeEvent;
 
-        public virtual void OnExit(IMachine machine, IState state) {}
+        public void OnRegister(IMachine machine, IState state = null)
+        {
+            OnRegisterEvent?.Invoke(machine, state);
+        }
 
-        public virtual void OnChange(IMachine machine, IState state) {}
+        public void OnExit(IMachine machine, IState state)
+        {
+            OnExitEvent?.Invoke(machine, state);
+        }
 
-        public virtual void OnNext(IMachine machine) {}
+        public void OnChange(IMachine machine, IState state)
+        {
+            OnChangeEvent?.Invoke(machine, state);
+        }
+
+        public void OnNext(IMachine machine, IState state = null)
+        {
+            OnNextEvent?.Invoke(machine, state);
+        }
     }
 }

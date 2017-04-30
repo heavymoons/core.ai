@@ -1,4 +1,5 @@
-﻿using heavymoons.core.tests.AI.Move;
+﻿using heavymoons.core.AI;
+using heavymoons.core.tests.AI.Move;
 using heavymoons.core.tests.AI.Switch;
 using NUnit.Framework;
 
@@ -28,6 +29,58 @@ namespace heavymoons.core.tests.AI
             machine.Next();
             machine.Next();
             Assert.True(machine.IsState(typeof(SwitchOff)));
+        }
+
+        [Test]
+        public void SwitchNoClassTest()
+        {
+            const string Switch = "switch";
+            const string On = "on";
+            const string Off = "off";
+
+            var machine = new StateMachine();
+
+            machine.BlackBoard.Register(Switch, false);
+
+            var off = new State();
+            off.CanChangeCallback += (m) =>
+            {
+                if (m.BlackBoard.GetValue<bool>(Switch))
+                {
+                    return m.GetState(On);
+                }
+                return null;
+            };
+            machine.RegisterState(off, Off);
+
+            var on = new State();
+            on.CanChangeCallback += (m) =>
+            {
+                if (!m.BlackBoard.GetValue<bool>(SwitchMachine.Switch))
+                {
+                    return m.GetState(Off);
+                }
+                return null;
+            };
+            machine.RegisterState(on, On);
+
+            Assert.True(machine.IsState(Off));
+            machine.Next();
+            Assert.True(machine.IsState(Off));
+            machine.BlackBoard.SetValue(Switch, true);
+            machine.Next();
+            Assert.True(machine.IsState(On));
+            machine.BlackBoard.SetValue(Switch, false);
+            machine.Next();
+            Assert.True(machine.IsState(Off));
+            machine.BlackBoard.SetValue(Switch, true);
+            machine.Next();
+            machine.Next();
+            Assert.True(machine.IsState(On));
+            machine.BlackBoard.SetValue(Switch, false);
+            machine.Next();
+            machine.Next();
+            Assert.True(machine.IsState(Off));
         }
 
         [Test]

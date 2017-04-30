@@ -16,7 +16,8 @@ namespace heavymoons.core.AI
         /// </summary>
         private readonly Dictionary<string, Component> _components = new Dictionary<string, Component>();
 
-        internal ReadOnlyDictionary<string, Component> Components => new ReadOnlyDictionary<string, Component>(_components);
+        internal ReadOnlyDictionary<string, Component> Components => new ReadOnlyDictionary<string, Component>(
+            _components);
 
         public bool HasRegistered => _components.Any();
 

@@ -6,20 +6,23 @@ namespace heavymoons.core.tests.AI.Move
 {
     public class Stop : State
     {
-        public override IState CanChange(IMachine machine)
+        public Stop()
         {
-            var playerStatus = machine.BlackBoard.GetValue<MoveStatus>(MoveMachine.Status);
-
-            if (!playerStatus.IsStop)
+            CanChangeCallback += (machine) =>
             {
-                return machine.GetState(typeof(Move));
-            }
-            return null;
-        }
+                var playerStatus = machine.BlackBoard.GetValue<MoveStatus>(MoveMachine.Status);
 
-        public override void OnChange(IMachine machine, IState state)
-        {
-            Console.WriteLine("Stopped!");
+                if (!playerStatus.IsStop)
+                {
+                    return machine.GetState(typeof(Move));
+                }
+                return null;
+            };
+
+            OnChangeEvent += (machine, state) =>
+            {
+                Console.WriteLine("Stopped!");
+            };
         }
     }
 }

@@ -8,7 +8,6 @@ namespace heavymoons.core.AI
 
         public void Next()
         {
-
         }
     }
 }

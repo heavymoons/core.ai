@@ -5,13 +5,16 @@ namespace heavymoons.core.tests.AI.Switch
 {
     public class SwitchOn : State
     {
-        public override IState CanChange(IMachine machine)
+        public SwitchOn()
         {
-            if (!machine.BlackBoard.GetValue<bool>(SwitchMachine.Switch))
+            CanChangeCallback += (machine) =>
             {
-                return machine.GetState(typeof(SwitchOff));
-            }
-            return null;
+                if (!machine.BlackBoard.GetValue<bool>(SwitchMachine.Switch))
+                {
+                    return machine.GetState(typeof(SwitchOff));
+                }
+                return null;
+            };
         }
     }
 }
