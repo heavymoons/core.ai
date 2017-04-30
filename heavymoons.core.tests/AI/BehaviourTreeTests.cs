@@ -1,7 +1,6 @@
 ﻿using System;
 using heavymoons.core.AI;
 using NUnit.Framework;
-using Action = heavymoons.core.AI.Action;
 
 namespace heavymoons.core.tests.AI
 {
@@ -26,17 +25,22 @@ namespace heavymoons.core.tests.AI
                 Console.WriteLine($"Distance: {distance}");
             };
 
-            var selector = new Selector();
+            var selector = new SelectorNode();
             machine.RegisterState(selector);
 
-            var decoratorHp = new Decorator();
+            var decoratorHp = new DecoratorNode();
             selector.Actions.Add(decoratorHp);
 
             decoratorHp.ConditionCallback = (m, s) => m.BlackBoard.GetValue<int>(hitpoint) > 5;
-            var attackNearEnemy = new Action();
+            var attackNearEnemy = new ActionNode();
             attackNearEnemy.ActionCallback = (m, s) =>
             {
                 Console.WriteLine("近くの敵を攻撃");
+
+                var distance = m.BlackBoard.GetValue<int>(distanceToTower);
+                distance += 1;
+                m.BlackBoard.SetValue(distanceToTower, distance);
+
                 var hp = m.BlackBoard.GetValue<int>(hitpoint);
                 hp -= 5;
                 m.BlackBoard.SetValue(hitpoint, hp);
@@ -44,10 +48,10 @@ namespace heavymoons.core.tests.AI
             };
             decoratorHp.Action = attackNearEnemy;
 
-            var sequencer = new Sequencer();
+            var sequencer = new SequencerNode();
             selector.Actions.Add(sequencer);
 
-            var moveToNearTower = new Action();
+            var moveToNearTower = new ActionNode();
             sequencer.Actions.Add(moveToNearTower);
 
             moveToNearTower.ActionCallback = (m, s) =>
@@ -61,12 +65,21 @@ namespace heavymoons.core.tests.AI
                 return true;
             };
 
-            var wait = new Action();
+            var wait = new ActionNode();
             sequencer.Actions.Add(wait);
 
             wait.ActionCallback = (m, s) =>
             {
                 Console.WriteLine("待機");
+
+                var distance = m.BlackBoard.GetValue<int>(distanceToTower);
+                if (distance < 5)
+                {
+                    var hp = m.BlackBoard.GetValue<int>(hitpoint);
+                    hp += 20;
+                    m.BlackBoard.SetValue(hitpoint, hp);
+                }
+
                 return true;
             };
 
@@ -74,8 +87,6 @@ namespace heavymoons.core.tests.AI
             {
                 machine.Execute();
             }
-
         }
-
     }
 }

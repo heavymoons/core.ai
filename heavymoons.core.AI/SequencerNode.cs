@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using heavymoons.core.AI.Interfaces;
 
 namespace heavymoons.core.AI
 {
-    public class Sequencer : IState
+    public class SequencerNode : IState
     {
         public BlackBoard BlackBoard { get; } = new BlackBoard();
 
@@ -31,7 +30,8 @@ namespace heavymoons.core.AI
             {
                 result = action.Execute(machine, state);
                 if (!result) break;
-            };
+            }
+            ;
             return result;
         }
 

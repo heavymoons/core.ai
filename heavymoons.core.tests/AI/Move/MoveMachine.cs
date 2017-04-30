@@ -3,7 +3,7 @@ using heavymoons.core.AI;
 
 namespace heavymoons.core.tests.AI.Move
 {
-    public class MoveMachine: StateMachine
+    public class MoveMachine : StateMachine
     {
         public const string Status = "status";
 
@@ -14,11 +14,7 @@ namespace heavymoons.core.tests.AI.Move
             RegisterState(new Move());
             RegisterState(new Goal());
 
-            OnExecuteEvent += (machine, status) =>
-            {
-                Console.WriteLine($"Counter: {machine.Counter}");
-            };
+            OnExecuteEvent += (machine, status) => { Console.WriteLine($"Counter: {machine.Counter}"); };
         }
-
     }
 }

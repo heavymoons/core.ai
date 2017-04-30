@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using heavymoons.core.AI.Interfaces;
+﻿using heavymoons.core.AI.Interfaces;
 
 namespace heavymoons.core.AI
 {

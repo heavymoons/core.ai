@@ -3,7 +3,7 @@ using heavymoons.core.AI;
 
 namespace heavymoons.core.tests.AI.Switch
 {
-    public class SwitchMachine: StateMachine
+    public class SwitchMachine : StateMachine
     {
         public const string Switch = "switch";
 
@@ -13,10 +13,7 @@ namespace heavymoons.core.tests.AI.Switch
             RegisterState(new SwitchOff());
             RegisterState(new SwitchOn());
 
-            OnExecuteEvent += (machine, status) =>
-            {
-                Console.WriteLine($"Counter: {machine.Counter}");
-            };
+            OnExecuteEvent += (machine, status) => { Console.WriteLine($"Counter: {machine.Counter}"); };
         }
     }
 }

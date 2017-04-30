@@ -2,7 +2,7 @@
 
 namespace heavymoons.core.AI
 {
-    public class Action : IState
+    public class ActionNode : IState
     {
         public virtual string Name => this.GetType().Name;
 

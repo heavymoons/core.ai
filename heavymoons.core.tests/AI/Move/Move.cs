@@ -1,6 +1,5 @@
 ﻿using System;
 using heavymoons.core.AI;
-using heavymoons.core.AI.Interfaces;
 
 namespace heavymoons.core.tests.AI.Move
 {
@@ -30,12 +29,7 @@ namespace heavymoons.core.tests.AI.Move
                 Console.WriteLine($"Move Next X: {status.X} Dx: {status.Dx}");
             };
 
-            OnChangeEvent += (machine, state) =>
-            {
-                Console.WriteLine("Moving!");
-            };
+            OnChangeEvent += (machine, state) => { Console.WriteLine("Moving!"); };
         }
-
-
     }
 }

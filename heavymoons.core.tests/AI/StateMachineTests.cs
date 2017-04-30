@@ -40,10 +40,7 @@ namespace heavymoons.core.tests.AI
             const string off = "off";
 
             var machine = new StateMachine();
-            machine.OnExecuteEvent += (m, s) =>
-            {
-                Console.WriteLine($"Counter: {m.Counter}");
-            };
+            machine.OnExecuteEvent += (m, s) => { Console.WriteLine($"Counter: {m.Counter}"); };
 
             machine.BlackBoard.Register(onOffSwitch, false);
 
@@ -187,6 +184,5 @@ namespace heavymoons.core.tests.AI
             Assert.AreEqual(147, status.X);
             Assert.AreEqual(0, status.Dx);
         }
-
     }
 }

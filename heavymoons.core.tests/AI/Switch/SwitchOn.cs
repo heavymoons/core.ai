@@ -1,5 +1,4 @@
 ﻿using heavymoons.core.AI;
-using heavymoons.core.AI.Interfaces;
 
 namespace heavymoons.core.tests.AI.Switch
 {

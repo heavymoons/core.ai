@@ -1,6 +1,5 @@
 ﻿using System;
 using heavymoons.core.AI;
-using heavymoons.core.AI.Interfaces;
 
 namespace heavymoons.core.tests.AI.Move
 {
@@ -19,10 +18,7 @@ namespace heavymoons.core.tests.AI.Move
                 return null;
             };
 
-            OnChangeEvent += (machine, state) =>
-            {
-                Console.WriteLine("Stopped!");
-            };
+            OnChangeEvent += (machine, state) => { Console.WriteLine("Stopped!"); };
         }
     }
 }
