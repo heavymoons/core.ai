@@ -21,7 +21,7 @@ namespace heavymoons.core.tests.AI.Move
             return null;
         }
 
-        public override void Next(IMachine machine)
+        public override void OnNext(IMachine machine)
         {
             var status = machine.BlackBoard.GetValue<MoveStatus>(MoveMachine.Status);
             status.X += status.Dx;

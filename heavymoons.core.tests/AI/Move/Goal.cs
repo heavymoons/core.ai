@@ -6,7 +6,7 @@ namespace heavymoons.core.tests.AI.Move
 {
     public class Goal : State
     {
-        public override void Next(IMachine machine)
+        public override void OnNext(IMachine machine)
         {
             var status = machine.BlackBoard.GetValue<MoveStatus>(MoveMachine.Status);
             status.Dx = status.Dx > 1 ? status.Dx - 1 : 0;

@@ -94,6 +94,9 @@ namespace heavymoons.core.AI
             nextState.OnChange(this, State);
             State = nextState;
             State.Next(this);
+            OnNext(this);
         }
+
+        public virtual void OnNext(IMachine machine) {}
     }
 }

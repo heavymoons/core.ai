@@ -7,13 +7,13 @@ namespace heavymoons.core.AI
     /// <summary>
     /// ステートマシンにおけるステートのベースクラス
     /// </summary>
-    public abstract class State : INode, IState
+    public class State : INode, IState
     {
         public virtual string Name => this.GetType().Name;
 
         public BlackBoard BlackBoard { get; } = new BlackBoard();
 
-        public virtual void Next(IMachine machine) {}
+        public virtual void Next(IMachine machine) {OnNext(machine);}
 
         public virtual IState CanChange(IMachine machine)
         {
@@ -25,5 +25,7 @@ namespace heavymoons.core.AI
         public virtual void OnExit(IMachine machine, IState state) {}
 
         public virtual void OnChange(IMachine machine, IState state) {}
+
+        public virtual void OnNext(IMachine machine) {}
     }
 }
