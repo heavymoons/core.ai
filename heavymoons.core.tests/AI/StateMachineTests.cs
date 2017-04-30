@@ -34,53 +34,53 @@ namespace heavymoons.core.tests.AI
         [Test]
         public void SwitchNoClassTest()
         {
-            const string Switch = "switch";
-            const string On = "on";
-            const string Off = "off";
+            const string onOffSwitch = "switch";
+            const string on = "on";
+            const string off = "off";
 
             var machine = new StateMachine();
 
-            machine.BlackBoard.Register(Switch, false);
+            machine.BlackBoard.Register(onOffSwitch, false);
 
-            var off = new State();
-            off.CanChangeCallback += (m) =>
+            var offState = new State();
+            offState.CanChangeCallback += (m) =>
             {
-                if (m.BlackBoard.GetValue<bool>(Switch))
+                if (m.BlackBoard.GetValue<bool>(onOffSwitch))
                 {
-                    return m.GetState(On);
+                    return m.GetState(on);
                 }
                 return null;
             };
-            machine.RegisterState(off, Off);
+            machine.RegisterState(offState, off);
 
-            var on = new State();
-            on.CanChangeCallback += (m) =>
+            var onState = new State();
+            onState.CanChangeCallback += (m) =>
             {
                 if (!m.BlackBoard.GetValue<bool>(SwitchMachine.Switch))
                 {
-                    return m.GetState(Off);
+                    return m.GetState(off);
                 }
                 return null;
             };
-            machine.RegisterState(on, On);
+            machine.RegisterState(onState, on);
 
-            Assert.True(machine.IsState(Off));
+            Assert.True(machine.IsState(off));
             machine.Next();
-            Assert.True(machine.IsState(Off));
-            machine.BlackBoard.SetValue(Switch, true);
+            Assert.True(machine.IsState(off));
+            machine.BlackBoard.SetValue(onOffSwitch, true);
             machine.Next();
-            Assert.True(machine.IsState(On));
-            machine.BlackBoard.SetValue(Switch, false);
+            Assert.True(machine.IsState(on));
+            machine.BlackBoard.SetValue(onOffSwitch, false);
             machine.Next();
-            Assert.True(machine.IsState(Off));
-            machine.BlackBoard.SetValue(Switch, true);
-            machine.Next();
-            machine.Next();
-            Assert.True(machine.IsState(On));
-            machine.BlackBoard.SetValue(Switch, false);
+            Assert.True(machine.IsState(off));
+            machine.BlackBoard.SetValue(onOffSwitch, true);
             machine.Next();
             machine.Next();
-            Assert.True(machine.IsState(Off));
+            Assert.True(machine.IsState(on));
+            machine.BlackBoard.SetValue(onOffSwitch, false);
+            machine.Next();
+            machine.Next();
+            Assert.True(machine.IsState(off));
         }
 
         [Test]
