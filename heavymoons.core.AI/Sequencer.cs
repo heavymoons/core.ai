@@ -1,23 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System;
+using System.Collections.Generic;
 using heavymoons.core.AI.Interfaces;
 
 namespace heavymoons.core.AI
 {
-    /// <summary>
-    /// ステートマシンにおけるステートのベースクラス
-    /// </summary>
-    public class State : IState
+    public class Sequencer : IState
     {
-        public virtual string Name => this.GetType().Name;
-
         public BlackBoard BlackBoard { get; } = new BlackBoard();
 
-        public virtual bool Execute(IMachine machine, IState state = null)
-        {
-            OnExecute(machine, state);
-            return true;
-        }
+        public virtual string Name => this.GetType().Name;
 
         public virtual IState CanChange(IMachine machine)
         {
@@ -25,10 +16,24 @@ namespace heavymoons.core.AI
         }
 
         public CanChangeDelegate CanChangeCallback;
+
+        public List<IState> Actions { get; } = new List<IState>();
         public StateEvent OnRegisterEvent;
         public StateEvent OnExecuteEvent;
         public StateEvent OnExitEvent;
         public StateEvent OnChangeEvent;
+
+        public bool Execute(IMachine machine, IState state = null)
+        {
+            OnExecute(machine, state);
+            var result = true;
+            foreach (var action in Actions)
+            {
+                result = action.Execute(machine, state);
+                if (!result) break;
+            };
+            return result;
+        }
 
         public void OnRegister(IMachine machine, IState state = null)
         {

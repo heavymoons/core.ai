@@ -1,4 +1,5 @@
-﻿using heavymoons.core.AI;
+﻿using System;
+using heavymoons.core.AI;
 
 namespace heavymoons.core.tests.AI.Switch
 {
@@ -11,6 +12,11 @@ namespace heavymoons.core.tests.AI.Switch
             BlackBoard.Register(Switch, false);
             RegisterState(new SwitchOff());
             RegisterState(new SwitchOn());
+
+            OnExecuteEvent += (machine, status) =>
+            {
+                Console.WriteLine($"Counter: {machine.Counter}");
+            };
         }
     }
 }

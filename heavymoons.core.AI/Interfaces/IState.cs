@@ -2,10 +2,11 @@
 {
     public interface IState
     {
+        BlackBoard BlackBoard { get; }
         IState CanChange(IMachine machine);
         string Name { get; }
-        void Next(IMachine machine);
-        void OnNext(IMachine machine, IState state);
+        bool Execute(IMachine machine, IState state);
+        void OnExecute(IMachine machine, IState state);
         void OnRegister(IMachine machine, IState state);
         void OnExit(IMachine machine, IState state);
         void OnChange(IMachine machine, IState state);

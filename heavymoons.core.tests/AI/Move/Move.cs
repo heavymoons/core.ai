@@ -23,7 +23,7 @@ namespace heavymoons.core.tests.AI.Move
                 return null;
             };
 
-            OnNextEvent += (machine, state) =>
+            OnExecuteEvent += (machine, state) =>
             {
                 var status = machine.BlackBoard.GetValue<MoveStatus>(MoveMachine.Status);
                 status.X += status.Dx;

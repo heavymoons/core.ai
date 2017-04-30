@@ -8,7 +8,7 @@ namespace heavymoons.core.tests.AI.Move
     {
         public Goal()
         {
-            OnNextEvent += (machine, state) =>
+            OnExecuteEvent += (machine, state) =>
             {
                 var status = machine.BlackBoard.GetValue<MoveStatus>(MoveMachine.Status);
                 status.Dx = status.Dx > 1 ? status.Dx - 1 : 0;

@@ -1,4 +1,5 @@
-﻿using heavymoons.core.AI;
+﻿using System;
+using heavymoons.core.AI;
 
 namespace heavymoons.core.tests.AI.Move
 {
@@ -12,6 +13,11 @@ namespace heavymoons.core.tests.AI.Move
             RegisterState(new Stop());
             RegisterState(new Move());
             RegisterState(new Goal());
+
+            OnExecuteEvent += (machine, status) =>
+            {
+                Console.WriteLine($"Counter: {machine.Counter}");
+            };
         }
 
     }

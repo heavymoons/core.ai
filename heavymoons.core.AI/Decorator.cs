@@ -1,23 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System.Dynamic;
 using heavymoons.core.AI.Interfaces;
 
 namespace heavymoons.core.AI
 {
-    /// <summary>
-    /// ステートマシンにおけるステートのベースクラス
-    /// </summary>
-    public class State : IState
+    public class Decorator: IState
     {
-        public virtual string Name => this.GetType().Name;
-
         public BlackBoard BlackBoard { get; } = new BlackBoard();
-
-        public virtual bool Execute(IMachine machine, IState state = null)
-        {
-            OnExecute(machine, state);
-            return true;
-        }
+        public virtual string Name => this.GetType().Name;
 
         public virtual IState CanChange(IMachine machine)
         {
@@ -25,10 +14,22 @@ namespace heavymoons.core.AI
         }
 
         public CanChangeDelegate CanChangeCallback;
+
+        public ActionCallback ConditionCallback;
+        public IState Action;
         public StateEvent OnRegisterEvent;
         public StateEvent OnExecuteEvent;
         public StateEvent OnExitEvent;
         public StateEvent OnChangeEvent;
+
+        public bool Execute(IMachine machine, IState state = null)
+        {
+            OnExecute(machine, state);
+
+            var result = ConditionCallback?.Invoke(machine, state) ?? false;
+            if (result) return Action.Execute(machine, state);
+            return false;
+        }
 
         public void OnRegister(IMachine machine, IState state = null)
         {

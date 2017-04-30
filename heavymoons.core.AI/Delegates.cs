@@ -4,5 +4,7 @@ namespace heavymoons.core.AI
 {
     public delegate void StateEvent(IMachine machine, IState state);
 
+    public delegate bool ActionCallback(IMachine machine, IState state);
+
     public delegate IState CanChangeDelegate(IMachine machine);
 }

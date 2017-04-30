@@ -6,9 +6,11 @@ using heavymoons.core.AI.Interfaces;
 
 namespace heavymoons.core.AI
 {
-    public class StateMachine : INode, IMachine, IState
+    public class StateMachine : IMachine, IState
     {
         public virtual string Name => this.GetType().Name;
+
+        public ulong Counter { get; private set; } = 0;
 
         public IState State { get; private set; } = null;
 
@@ -81,25 +83,27 @@ namespace heavymoons.core.AI
             return CanChangeCallback?.Invoke(machine);
         }
 
-        public void Next(IMachine machine = null)
+        public bool Execute(IMachine machine = null, IState state = null)
         {
-            if (State == null) throw new InvalidOperationException("current state not set");
+            Counter++;
+            OnExecute(this, state);
+
+            if (State == null) return false;
+
             var nextState = State.CanChange(this);
             if (nextState == null)
             {
-                State.Next(this);
-                return;
+                return State.Execute(this, state);
             }
             State.OnExit(this, nextState);
             nextState.OnChange(this, State);
             State = nextState;
-            State.Next(this);
-            OnNext(this);
+            return State.Execute(this, state);
         }
 
         public CanChangeDelegate CanChangeCallback;
         public StateEvent OnRegisterEvent;
-        public StateEvent OnNextEvent;
+        public StateEvent OnExecuteEvent;
         public StateEvent OnExitEvent;
         public StateEvent OnChangeEvent;
 
@@ -124,9 +128,9 @@ namespace heavymoons.core.AI
             OnChangeEvent?.Invoke(machine, state);
         }
 
-        public void OnNext(IMachine machine, IState state = null)
+        public void OnExecute(IMachine machine, IState state = null)
         {
-            OnNextEvent?.Invoke(machine, state);
+            OnExecuteEvent?.Invoke(machine, state);
         }
     }
 }
