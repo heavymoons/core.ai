@@ -89,7 +89,7 @@ namespace heavymoons.core.tests.AI
         public void MoveTest()
         {
             var machine = new MoveMachine();
-            var status = machine.BlackBoard.GetValue<MoveStatus>(MoveMachine.Status);
+            var status = machine.BlackBoard.GetValue<MoveStatus>();
             machine.Execute();
             Assert.True(machine.IsState(typeof(Stop)));
             Assert.False(status.IsGoal);

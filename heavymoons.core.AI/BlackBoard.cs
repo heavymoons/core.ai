@@ -78,6 +78,22 @@ namespace heavymoons.core.AI
         }
 
         /// <summary>
+        /// 同じ型が一つしか登録されていない場合、型指定だけで名前なしで値が取得できる
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public T GetValue<T>()
+        {
+            var values = _components.Values.Where(component => component.Value is T).ToList();
+            if (values.Count == 1)
+            {
+                return values.First().GetValue<T>();
+            }
+            throw new InvalidOperationException($"type has multiple or no parameter");
+        }
+
+        /// <summary>
         /// スカラー型以外のパラメータを管理する内部クラス
         /// </summary>
         internal class Component
