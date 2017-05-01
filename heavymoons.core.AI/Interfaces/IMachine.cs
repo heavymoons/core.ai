@@ -8,5 +8,6 @@ namespace heavymoons.core.AI.Interfaces
         BlackBoard BlackBoard { get; }
         IState GetState(string name);
         IState GetState(Type type);
+        IState NextState { get; set; }
     }
 }

@@ -25,8 +25,11 @@ namespace heavymoons.core.tests.AI
                 Console.WriteLine($"Distance: {distance}");
             };
 
+            var behaviour = new BehaviorState();
+            machine.RegisterState(behaviour);
+
             var selector = new SelectorNode();
-            machine.RegisterState(selector);
+            behaviour.Node = selector;
 
             var decoratorHp = new DecoratorNode();
             selector.Actions.Add(decoratorHp);

@@ -14,6 +14,8 @@ namespace heavymoons.core.AI
 
         public IState State { get; private set; } = null;
 
+        public IState NextState { get; set; } = null;
+
         public BlackBoard BlackBoard { get; private set; } = new BlackBoard();
 
         private Dictionary<string, IState> _states = new Dictionary<string, IState>();
@@ -78,34 +80,29 @@ namespace heavymoons.core.AI
             State = GetState(type);
         }
 
-        public IState CanChange(IMachine machine)
-        {
-            return CanChangeCallback?.Invoke(machine);
-        }
-
         public bool Execute(IMachine machine = null, IState state = null)
         {
-            Counter++;
-            OnExecute(this, state);
-
             if (State == null) return false;
 
-            var nextState = State.CanChange(this);
-            if (nextState == null)
+            Counter++;
+            OnExecute(this, this);
+
+            var result = State.Execute(this, State);
+
+            if (State.NextState != null)
             {
-                return State.Execute(this, state);
+                var nextState = State.NextState;
+                State.OnExit(this, nextState);
+                nextState.OnEnter(this, nextState);
+                State = nextState;
             }
-            State.OnExit(this, nextState);
-            nextState.OnChange(this, State);
-            State = nextState;
-            return State.Execute(this, state);
+            return result;
         }
 
-        public CanChangeDelegate CanChangeCallback;
         public StateEvent OnRegisterEvent;
         public StateEvent OnExecuteEvent;
         public StateEvent OnExitEvent;
-        public StateEvent OnChangeEvent;
+        public StateEvent OnEnterEvent;
 
         public void OnRegister(IMachine machine, IState state = null)
         {
@@ -120,12 +117,13 @@ namespace heavymoons.core.AI
 
         public void OnExit(IMachine machine, IState state)
         {
+            NextState = null;
             OnExitEvent?.Invoke(machine, state);
         }
 
-        public void OnChange(IMachine machine, IState state)
+        public void OnEnter(IMachine machine, IState state)
         {
-            OnChangeEvent?.Invoke(machine, state);
+            OnEnterEvent?.Invoke(machine, state);
         }
 
         public void OnExecute(IMachine machine, IState state = null)

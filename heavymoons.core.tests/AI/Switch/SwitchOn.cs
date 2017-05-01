@@ -1,4 +1,5 @@
 ﻿using heavymoons.core.AI;
+using heavymoons.core.AI.Interfaces;
 
 namespace heavymoons.core.tests.AI.Switch
 {
@@ -6,13 +7,12 @@ namespace heavymoons.core.tests.AI.Switch
     {
         public SwitchOn()
         {
-            CanChangeCallback += (machine) =>
+            OnExecuteEvent += (machine, state) =>
             {
                 if (!machine.BlackBoard.GetValue<bool>(SwitchMachine.Switch))
                 {
-                    return machine.GetState(typeof(SwitchOff));
+                    state.NextState = machine.GetState(typeof(SwitchOff));
                 }
-                return null;
             };
         }
     }

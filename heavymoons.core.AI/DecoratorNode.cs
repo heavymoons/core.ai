@@ -2,24 +2,17 @@
 
 namespace heavymoons.core.AI
 {
-    public class DecoratorNode : IState
+    public class DecoratorNode : INode
     {
         public BlackBoard BlackBoard { get; } = new BlackBoard();
         public virtual string Name => this.GetType().Name;
 
-        public virtual IState CanChange(IMachine machine)
-        {
-            return CanChangeCallback?.Invoke(machine);
-        }
-
-        public CanChangeDelegate CanChangeCallback;
-
         public ActionCallback ConditionCallback;
-        public IState Action;
+        public INode Action;
         public StateEvent OnRegisterEvent;
         public StateEvent OnExecuteEvent;
         public StateEvent OnExitEvent;
-        public StateEvent OnChangeEvent;
+        public StateEvent OnEnterEvent;
 
         public bool Execute(IMachine machine, IState state = null)
         {
@@ -40,9 +33,9 @@ namespace heavymoons.core.AI
             OnExitEvent?.Invoke(machine, state);
         }
 
-        public void OnChange(IMachine machine, IState state)
+        public void OnEnter(IMachine machine, IState state)
         {
-            OnChangeEvent?.Invoke(machine, state);
+            OnEnterEvent?.Invoke(machine, state);
         }
 
         public void OnExecute(IMachine machine, IState state = null)

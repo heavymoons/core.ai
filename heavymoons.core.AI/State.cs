@@ -1,4 +1,6 @@
-﻿using heavymoons.core.AI.Interfaces;
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using heavymoons.core.AI.Interfaces;
 
 namespace heavymoons.core.AI
 {
@@ -11,22 +13,18 @@ namespace heavymoons.core.AI
 
         public BlackBoard BlackBoard { get; } = new BlackBoard();
 
-        public virtual bool Execute(IMachine machine, IState state = null)
+        public virtual bool Execute(IMachine machine, IState state)
         {
             OnExecute(machine, state);
             return true;
         }
 
-        public virtual IState CanChange(IMachine machine)
-        {
-            return CanChangeCallback?.Invoke(machine);
-        }
+        public IState NextState { get; set; } = null;
 
-        public CanChangeDelegate CanChangeCallback;
         public StateEvent OnRegisterEvent;
         public StateEvent OnExecuteEvent;
         public StateEvent OnExitEvent;
-        public StateEvent OnChangeEvent;
+        public StateEvent OnEnterEvent;
 
         public void OnRegister(IMachine machine, IState state = null)
         {
@@ -35,12 +33,13 @@ namespace heavymoons.core.AI
 
         public void OnExit(IMachine machine, IState state)
         {
+            NextState = null;
             OnExitEvent?.Invoke(machine, state);
         }
 
-        public void OnChange(IMachine machine, IState state)
+        public void OnEnter(IMachine machine, IState state)
         {
-            OnChangeEvent?.Invoke(machine, state);
+            OnEnterEvent?.Invoke(machine, state);
         }
 
         public void OnExecute(IMachine machine, IState state = null)

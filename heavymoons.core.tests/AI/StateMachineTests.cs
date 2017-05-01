@@ -45,24 +45,22 @@ namespace heavymoons.core.tests.AI
             machine.BlackBoard.Register(onOffSwitch, false);
 
             var offState = new State();
-            offState.CanChangeCallback += (m) =>
+            offState.OnExecuteEvent += (m, s) =>
             {
                 if (m.BlackBoard.GetValue<bool>(onOffSwitch))
                 {
-                    return m.GetState(on);
+                    s.NextState = m.GetState(on);
                 }
-                return null;
             };
             machine.RegisterState(offState, off);
 
             var onState = new State();
-            onState.CanChangeCallback += (m) =>
+            onState.OnExecuteEvent += (m, s) =>
             {
-                if (!m.BlackBoard.GetValue<bool>(SwitchMachine.Switch))
+                if (!m.BlackBoard.GetValue<bool>(onOffSwitch))
                 {
-                    return m.GetState(off);
+                    s.NextState = m.GetState(off);
                 }
-                return null;
             };
             machine.RegisterState(onState, on);
 
@@ -103,14 +101,14 @@ namespace heavymoons.core.tests.AI
             Assert.False(status.IsGoal);
             Assert.False(status.IsStop);
             Assert.True(status.IsMove);
-            Assert.AreEqual(1, status.X);
+            Assert.AreEqual(0, status.X);
             Assert.AreEqual(1, status.Dx);
             machine.Execute();
             Assert.True(machine.IsState(typeof(Move.Move)));
             Assert.False(status.IsGoal);
             Assert.False(status.IsStop);
             Assert.True(status.IsMove);
-            Assert.AreEqual(2, status.X);
+            Assert.AreEqual(1, status.X);
             Assert.AreEqual(1, status.Dx);
             status.Dx = 0;
             machine.Execute();
@@ -118,7 +116,7 @@ namespace heavymoons.core.tests.AI
             Assert.False(status.IsGoal);
             Assert.True(status.IsStop);
             Assert.False(status.IsMove);
-            Assert.AreEqual(2, status.X);
+            Assert.AreEqual(1, status.X);
             Assert.AreEqual(0, status.Dx);
             status.Dx = 10;
             machine.Execute();
@@ -126,8 +124,9 @@ namespace heavymoons.core.tests.AI
             Assert.False(status.IsGoal);
             Assert.False(status.IsStop);
             Assert.True(status.IsMove);
-            Assert.AreEqual(12, status.X);
+            Assert.AreEqual(1, status.X);
             Assert.AreEqual(10, status.Dx);
+            machine.Execute();
             machine.Execute();
             machine.Execute();
             machine.Execute();
@@ -140,21 +139,21 @@ namespace heavymoons.core.tests.AI
             Assert.False(status.IsGoal);
             Assert.False(status.IsStop);
             Assert.True(status.IsMove);
-            Assert.AreEqual(92, status.X);
+            Assert.AreEqual(91, status.X);
             Assert.AreEqual(10, status.Dx);
             machine.Execute();
-            Assert.True(machine.IsState(typeof(Move.Move)));
+            Assert.True(machine.IsState(typeof(Move.Goal)));
             Assert.True(status.IsGoal);
             Assert.False(status.IsStop);
             Assert.True(status.IsMove);
-            Assert.AreEqual(102, status.X);
+            Assert.AreEqual(101, status.X);
             Assert.AreEqual(10, status.Dx);
             machine.Execute();
             Assert.True(machine.IsState(typeof(Goal)));
             Assert.True(status.IsGoal);
             Assert.False(status.IsStop);
             Assert.True(status.IsMove);
-            Assert.AreEqual(111, status.X);
+            Assert.AreEqual(110, status.X);
             Assert.AreEqual(9, status.Dx);
             machine.Execute();
             Assert.AreEqual(8, status.Dx);
@@ -174,14 +173,14 @@ namespace heavymoons.core.tests.AI
             Assert.True(status.IsGoal);
             Assert.True(status.IsStop);
             Assert.False(status.IsMove);
-            Assert.AreEqual(147, status.X);
+            Assert.AreEqual(146, status.X);
             Assert.AreEqual(0, status.Dx);
             machine.Execute();
             Assert.True(machine.IsState(typeof(Goal)));
             Assert.True(status.IsGoal);
             Assert.True(status.IsStop);
             Assert.False(status.IsMove);
-            Assert.AreEqual(147, status.X);
+            Assert.AreEqual(146, status.X);
             Assert.AreEqual(0, status.Dx);
         }
     }

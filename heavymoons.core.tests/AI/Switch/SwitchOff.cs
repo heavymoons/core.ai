@@ -6,13 +6,12 @@ namespace heavymoons.core.tests.AI.Switch
     {
         public SwitchOff()
         {
-            CanChangeCallback += (machine) =>
+            OnExecuteEvent += (machine, state) =>
             {
                 if (machine.BlackBoard.GetValue<bool>(SwitchMachine.Switch))
                 {
-                    return machine.GetState(typeof(SwitchOn));
+                    state.NextState = machine.GetState(typeof(SwitchOn));
                 }
-                return null;
             };
         }
     }

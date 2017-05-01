@@ -7,18 +7,17 @@ namespace heavymoons.core.tests.AI.Move
     {
         public Stop()
         {
-            CanChangeCallback += (machine) =>
+            OnExecuteEvent += (machine, state) =>
             {
                 var playerStatus = machine.BlackBoard.GetValue<MoveStatus>(MoveMachine.Status);
 
                 if (!playerStatus.IsStop)
                 {
-                    return machine.GetState(typeof(Move));
+                    state.NextState = machine.GetState(typeof(Move));
                 }
-                return null;
             };
 
-            OnChangeEvent += (machine, state) => { Console.WriteLine("Stopped!"); };
+            OnEnterEvent += (machine, state) => { Console.WriteLine("Stopped!"); };
         }
     }
 }

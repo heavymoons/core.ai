@@ -3,19 +3,12 @@ using heavymoons.core.AI.Interfaces;
 
 namespace heavymoons.core.AI
 {
-    public class SelectorNode : IState
+    public class SelectorNode : INode
     {
         public BlackBoard BlackBoard { get; } = new BlackBoard();
         public virtual string Name => this.GetType().Name;
 
-        public virtual IState CanChange(IMachine machine)
-        {
-            return CanChangeCallback?.Invoke(machine);
-        }
-
-        public CanChangeDelegate CanChangeCallback;
-
-        public List<IState> Actions { get; } = new List<IState>();
+        public List<INode> Actions { get; } = new List<INode>();
         public StateEvent OnRegisterEvent;
         public StateEvent OnExecuteEvent;
         public StateEvent OnExitEvent;
@@ -44,7 +37,7 @@ namespace heavymoons.core.AI
             OnExitEvent?.Invoke(machine, state);
         }
 
-        public void OnChange(IMachine machine, IState state)
+        public void OnEnter(IMachine machine, IState state)
         {
             OnChangeEvent?.Invoke(machine, state);
         }

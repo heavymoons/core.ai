@@ -7,29 +7,24 @@ namespace heavymoons.core.tests.AI.Move
     {
         public Move()
         {
-            CanChangeCallback += (machine) =>
-            {
-                var status = machine.BlackBoard.GetValue<MoveStatus>(MoveMachine.Status);
-
-                if (status.IsGoal)
-                {
-                    return machine.GetState(typeof(Goal));
-                }
-                if (status.IsStop)
-                {
-                    return machine.GetState(typeof(Stop));
-                }
-                return null;
-            };
-
             OnExecuteEvent += (machine, state) =>
             {
                 var status = machine.BlackBoard.GetValue<MoveStatus>(MoveMachine.Status);
+
                 status.X += status.Dx;
                 Console.WriteLine($"Move Next X: {status.X} Dx: {status.Dx}");
+
+                if (status.IsGoal)
+                {
+                    state.NextState = machine.GetState(typeof(Goal));
+                }
+                else if (status.IsStop)
+                {
+                    state.NextState = machine.GetState(typeof(Stop));
+                }
             };
 
-            OnChangeEvent += (machine, state) => { Console.WriteLine("Moving!"); };
+            OnEnterEvent += (machine, state) => { Console.WriteLine("Moving!"); };
         }
     }
 }

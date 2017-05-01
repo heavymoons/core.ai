@@ -15,7 +15,7 @@ namespace heavymoons.core.tests.AI.Move
                 Console.WriteLine($"Goal Next X: {status.X} Dx: {status.Dx}");
             };
 
-            OnChangeEvent += (machine, state) => { Console.WriteLine("Goal!"); };
+            OnEnterEvent += (machine, state) => { Console.WriteLine("Goal!"); };
         }
     }
 }
