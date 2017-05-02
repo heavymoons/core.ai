@@ -9,7 +9,7 @@ namespace heavymoons.core.AI
     /// 共有パラメーター置き場
     /// ステートマシン、ビヘイビアツリー内で共有するパラメータを保持する
     /// </summary>
-    public class BlackBoard
+    public class DataStore
     {
         /// <summary>
         /// パラメータ保持用ディクショナリ
@@ -19,21 +19,24 @@ namespace heavymoons.core.AI
         internal ReadOnlyDictionary<string, Component> Components => new ReadOnlyDictionary<string, Component>(
             _components);
 
-        public bool HasRegistered => _components.Any();
-
         /// <summary>
         /// パラメータを名前、値、型を使って登録する
         /// </summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
-        /// <param name="type"></param>
         /// <exception cref="ArgumentException"></exception>
-        public void Register(string name, object value, Type type = null)
+        public void Register(string name, object value)
         {
             if (_components.ContainsKey(name)) throw new ArgumentException($"already registered name: {name}");
 
-            if (type == null) type = value.GetType();
             _components[name] = new Component(value);
+        }
+
+        public void Override(DataStore blackboard, string name)
+        {
+            if (_components.ContainsKey(name)) throw new ArgumentException($"already registered name: {name}");
+
+            _components[name] = new ReferenceComponent(blackboard, name);
         }
 
         /// <summary>
@@ -73,8 +76,8 @@ namespace heavymoons.core.AI
         /// <returns></returns>
         public T GetValue<T>(string name)
         {
-            var value = GetValue(name);
-            return (T) value;
+            if (_components.ContainsKey(name)) return _components[name].GetValue<T>();
+            throw new ArgumentException($"name not registered: {name}");
         }
 
         /// <summary>
@@ -91,36 +94,6 @@ namespace heavymoons.core.AI
                 return values.First().GetValue<T>();
             }
             throw new InvalidOperationException($"type has multiple or no parameter");
-        }
-
-        /// <summary>
-        /// スカラー型以外のパラメータを管理する内部クラス
-        /// </summary>
-        internal class Component
-        {
-            /// <summary>
-            /// 保持する値
-            /// </summary>
-            public object Value { get; set; }
-
-            /// <summary>
-            /// コンストラクタ
-            /// </summary>
-            /// <param name="value"></param>
-            public Component(object value)
-            {
-                Value = value;
-            }
-
-            /// <summary>
-            /// 値を型指定して取得
-            /// </summary>
-            /// <typeparam name="T"></typeparam>
-            /// <returns></returns>
-            public T GetValue<T>()
-            {
-                return (T) Value;
-            }
         }
     }
 }

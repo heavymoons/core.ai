@@ -1,5 +1,5 @@
 ﻿using heavymoons.core.AI;
-using heavymoons.core.AI.Interfaces;
+using heavymoons.core.AI.FiniteStateMachine;
 
 namespace heavymoons.core.tests.AI.Switch
 {
@@ -9,9 +9,9 @@ namespace heavymoons.core.tests.AI.Switch
         {
             OnExecuteEvent += (machine, state) =>
             {
-                if (!machine.BlackBoard.GetValue<bool>(SwitchMachine.Switch))
+                if (!machine.DataStore.GetValue<bool>(SwitchMachine.Switch))
                 {
-                    state.NextState = machine.GetState(typeof(SwitchOff));
+                    machine.NextState = "SwitchOff";
                 }
             };
         }

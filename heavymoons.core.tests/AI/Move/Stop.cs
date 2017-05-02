@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using heavymoons.core.AI;
+using heavymoons.core.AI.FiniteStateMachine;
 
 namespace heavymoons.core.tests.AI.Move
 {
@@ -9,15 +11,15 @@ namespace heavymoons.core.tests.AI.Move
         {
             OnExecuteEvent += (machine, state) =>
             {
-                var playerStatus = machine.BlackBoard.GetValue<MoveStatus>(MoveMachine.Status);
+                var playerStatus = machine.DataStore.GetValue<MoveStatus>(MoveMachine.Status);
 
                 if (!playerStatus.IsStop)
                 {
-                    state.NextState = machine.GetState(typeof(Move));
+                    machine.NextState = "Move";
                 }
             };
 
-            OnEnterEvent += (machine, state) => { Console.WriteLine("Stopped!"); };
+            OnEnterEvent += (machine, state) => { Debug.WriteLine("Stopped!"); };
         }
     }
 }

@@ -11,14 +11,12 @@ namespace heavymoons.core.tests.AI
         {
             var approach = new ApproachMachine();
 
-            Assert.True(approach.IsState("SwitchOff"));
+            Assert.True(approach.IsCurrentState("SwitchOff"));
             approach.Execute();
-            Assert.True(approach.IsState("SwitchOff"));
-            approach.BlackBoard.SetValue("Switch", true);
+            Assert.True(approach.IsCurrentState("SwitchOff"));
+            approach.DataStore.SetValue("Switch", true);
             approach.Execute();
-            Assert.True(approach.IsState("SwitchOn"));
-            approach.Execute();
-            approach.Execute();
+            Assert.True(approach.IsCurrentState("SwitchOn"));
             approach.Execute();
             approach.Execute();
             approach.Execute();
@@ -52,8 +50,8 @@ namespace heavymoons.core.tests.AI
             approach.Execute();
             approach.Execute();
             approach.Execute();
-
-
+            approach.Execute();
+            approach.Execute();
         }
 
     }

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using heavymoons.core.AI;
+using heavymoons.core.AI.BehaviourTree;
+using heavymoons.core.AI.FiniteStateMachine;
 using NUnit.Framework;
 
 namespace heavymoons.core.tests.AI
@@ -13,74 +16,71 @@ namespace heavymoons.core.tests.AI
             const string hitpoint = "hp";
             const string distanceToTower = "distance";
 
-            var machine = new StateMachine();
-            machine.BlackBoard.Register(hitpoint, 100);
-            machine.BlackBoard.Register(distanceToTower, 10);
+            var machine = new BehaviourMachine();
+            machine.DataStore.Register(hitpoint, 100);
+            machine.DataStore.Register(distanceToTower, 10);
 
-            machine.OnExecuteEvent += (m, s) =>
+            machine.OnExecuteEvent += (m) =>
             {
-                var hp = m.BlackBoard.GetValue<int>(hitpoint);
-                var distance = m.BlackBoard.GetValue<int>(distanceToTower);
-                Console.WriteLine($"HP: {hp}");
-                Console.WriteLine($"Distance: {distance}");
+                var hp = m.DataStore.GetValue<int>(hitpoint);
+                var distance = m.DataStore.GetValue<int>(distanceToTower);
+                Debug.WriteLine($"HP: {hp}");
+                Debug.WriteLine($"Distance: {distance}");
             };
-
-            var behaviour = new BehaviourState();
-            machine.RegisterState(behaviour);
 
             var selector = new SelectorNode();
-            behaviour.Node = selector;
+            machine.Node = selector;
 
             var decoratorHp = new DecoratorNode();
-            selector.Actions.Add(decoratorHp);
+            selector.Nodes.Add(decoratorHp);
 
-            decoratorHp.ConditionCallback = (m, s, n) => m.BlackBoard.GetValue<int>(hitpoint) > 5;
+            decoratorHp.ConditionCallback = (m, n) => m.DataStore.GetValue<int>(hitpoint) > 5;
             var attackNearEnemy = new ActionNode();
-            attackNearEnemy.ActionCallback = (m, s, n) =>
+            attackNearEnemy.ActionCallback = (m, n) =>
             {
-                Console.WriteLine("近くの敵を攻撃");
+                Debug.WriteLine("近くの敵を攻撃");
 
-                var distance = m.BlackBoard.GetValue<int>(distanceToTower);
+                var distance = m.DataStore.GetValue<int>(distanceToTower);
                 distance += 1;
-                m.BlackBoard.SetValue(distanceToTower, distance);
+                m.DataStore.SetValue(distanceToTower, distance);
 
-                var hp = m.BlackBoard.GetValue<int>(hitpoint);
+                var hp = m.DataStore.GetValue<int>(hitpoint);
                 hp -= 5;
-                m.BlackBoard.SetValue(hitpoint, hp);
+                m.DataStore.SetValue(hitpoint, hp);
                 return true;
             };
-            decoratorHp.Action = attackNearEnemy;
+            decoratorHp.Node = attackNearEnemy;
 
             var sequencer = new SequencerNode();
-            selector.Actions.Add(sequencer);
+            selector.Nodes.Add(sequencer);
 
             var moveToNearTower = new ActionNode();
-            sequencer.Actions.Add(moveToNearTower);
+            sequencer.Nodes.Add(moveToNearTower);
 
-            moveToNearTower.ActionCallback = (m, s, n) =>
+            moveToNearTower.ActionCallback = (m, n) =>
             {
-                var distance = m.BlackBoard.GetValue<int>(distanceToTower);
+                var distance = m.DataStore.GetValue<int>(distanceToTower);
                 if (distance <= 0) return true;
 
-                Console.WriteLine("近くのタワーに移動");
+                Debug.WriteLine("近くのタワーに移動");
                 distance--;
-                m.BlackBoard.SetValue(distanceToTower, distance);
+                m.DataStore.SetValue(distanceToTower, distance);
                 return true;
             };
 
             var wait = new ActionNode();
-            sequencer.Actions.Add(wait);
+            sequencer.Nodes.Add(wait);
 
-            wait.ActionCallback = (m, s, n) =>
+            wait.ActionCallback = (m, n) =>
             {
-                Console.WriteLine("待機");
+                Debug.WriteLine("待機");
 
-                var distance = m.BlackBoard.GetValue<int>(distanceToTower);
+                var distance = m.DataStore.GetValue<int>(distanceToTower);
                 if (distance < 5)
                 {
-                    var hp = m.BlackBoard.GetValue<int>(hitpoint);
+                    var hp = m.DataStore.GetValue<int>(hitpoint);
                     hp += 20;
-                    m.BlackBoard.SetValue(hitpoint, hp);
+                    m.DataStore.SetValue(hitpoint, hp);
                 }
 
                 return true;
