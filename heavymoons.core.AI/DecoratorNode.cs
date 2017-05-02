@@ -4,8 +4,8 @@ namespace heavymoons.core.AI
 {
     public class DecoratorNode : BaseNode
     {
-        public ActionCallback ConditionCallback;
-        public INode Action;
+        public ActionCallback ConditionCallback { get; set; }
+        public INode Action { get; set; }
 
         public override bool Execute(IMachine machine, IState state)
         {

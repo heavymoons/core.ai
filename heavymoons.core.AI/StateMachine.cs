@@ -18,7 +18,7 @@ namespace heavymoons.core.AI
 
         public BlackBoard BlackBoard { get; private set; } = new BlackBoard();
 
-        private Dictionary<string, IState> _states = new Dictionary<string, IState>();
+        private readonly Dictionary<string, IState> _states = new Dictionary<string, IState>();
 
         public ReadOnlyDictionary<string, IState> States => new ReadOnlyDictionary<string, IState>(_states);
 

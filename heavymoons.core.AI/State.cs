@@ -9,8 +9,8 @@ namespace heavymoons.core.AI
     /// </summary>
     public class State : IState
     {
-        protected string _name = null;
-        public virtual string Name => _name ?? this.GetType().Name;
+        private readonly string _name = null;
+        public string Name => _name ?? GetType().Name;
 
         public BlackBoard BlackBoard { get; } = new BlackBoard();
 
