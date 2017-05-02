@@ -37,13 +37,16 @@
         <Reference Include="System"/>
         <Reference Include="System.Core"/>
         <Reference Include="System.Data"/>
+        <Reference Include="System.Drawing"/>
         <Reference Include="System.Xml"/>
         <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb">
             <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="AI\Approach\ApproachMachine.cs"/>
         <Compile Include="AI\BehaviourTreeTests.cs"/>
+        <Compile Include="AI\ComplexTreeTests.cs"/>
         <Compile Include="AI\Move\Goal.cs"/>
         <Compile Include="AI\Move\Move.cs"/>
         <Compile Include="AI\Move\MoveMachine.cs"/>
@@ -61,15 +64,12 @@
             <Name>heavymoons.core.AI</Name>
         </ProjectReference>
     </ItemGroup>
-    <ItemGroup>
-        <Folder Include="AI\TreeState"/>
-    </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-             Other similar extension points exist, see Microsoft.Common.targets.
-        <Target Name="BeforeBuild">
-        </Target>
-        <Target Name="AfterBuild">
-        </Target>
-        -->
+               Other similar extension points exist, see Microsoft.Common.targets.
+          <Target Name="BeforeBuild">
+          </Target>
+          <Target Name="AfterBuild">
+          </Target>
+          -->
 </Project>

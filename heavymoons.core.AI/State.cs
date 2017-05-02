@@ -9,13 +9,20 @@ namespace heavymoons.core.AI
     /// </summary>
     public class State : IState
     {
-        public virtual string Name => this.GetType().Name;
+        protected string _name = null;
+        public virtual string Name => _name ?? this.GetType().Name;
 
         public BlackBoard BlackBoard { get; } = new BlackBoard();
 
-        public virtual bool Execute(IMachine machine, IState state)
+        public State() {}
+        public State(string name) : this()
         {
-            OnExecute(machine, state);
+            _name = name;
+        }
+
+        public virtual bool Execute(IMachine machine)
+        {
+            OnExecute(machine, this);
             return true;
         }
 
@@ -26,25 +33,25 @@ namespace heavymoons.core.AI
         public StateEvent OnExitEvent;
         public StateEvent OnEnterEvent;
 
-        public void OnRegister(IMachine machine, IState state = null)
+        public void OnRegister(IMachine machine, IState state)
         {
-            OnRegisterEvent?.Invoke(machine, state);
+            OnRegisterEvent?.Invoke(machine, this);
         }
 
         public void OnExit(IMachine machine, IState state)
         {
             NextState = null;
-            OnExitEvent?.Invoke(machine, state);
+            OnExitEvent?.Invoke(machine, this);
         }
 
         public void OnEnter(IMachine machine, IState state)
         {
-            OnEnterEvent?.Invoke(machine, state);
+            OnEnterEvent?.Invoke(machine, this);
         }
 
-        public void OnExecute(IMachine machine, IState state = null)
+        public void OnExecute(IMachine machine, IState state)
         {
-            OnExecuteEvent?.Invoke(machine, state);
+            OnExecuteEvent?.Invoke(machine, this);
         }
     }
 }

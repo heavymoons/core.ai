@@ -25,7 +25,7 @@ namespace heavymoons.core.tests.AI
                 Console.WriteLine($"Distance: {distance}");
             };
 
-            var behaviour = new BehaviorState();
+            var behaviour = new BehaviourState();
             machine.RegisterState(behaviour);
 
             var selector = new SelectorNode();
@@ -34,9 +34,9 @@ namespace heavymoons.core.tests.AI
             var decoratorHp = new DecoratorNode();
             selector.Actions.Add(decoratorHp);
 
-            decoratorHp.ConditionCallback = (m, s) => m.BlackBoard.GetValue<int>(hitpoint) > 5;
+            decoratorHp.ConditionCallback = (m, s, n) => m.BlackBoard.GetValue<int>(hitpoint) > 5;
             var attackNearEnemy = new ActionNode();
-            attackNearEnemy.ActionCallback = (m, s) =>
+            attackNearEnemy.ActionCallback = (m, s, n) =>
             {
                 Console.WriteLine("近くの敵を攻撃");
 
@@ -57,7 +57,7 @@ namespace heavymoons.core.tests.AI
             var moveToNearTower = new ActionNode();
             sequencer.Actions.Add(moveToNearTower);
 
-            moveToNearTower.ActionCallback = (m, s) =>
+            moveToNearTower.ActionCallback = (m, s, n) =>
             {
                 var distance = m.BlackBoard.GetValue<int>(distanceToTower);
                 if (distance <= 0) return true;
@@ -71,7 +71,7 @@ namespace heavymoons.core.tests.AI
             var wait = new ActionNode();
             sequencer.Actions.Add(wait);
 
-            wait.ActionCallback = (m, s) =>
+            wait.ActionCallback = (m, s, n) =>
             {
                 Console.WriteLine("待機");
 

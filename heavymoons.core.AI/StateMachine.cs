@@ -28,7 +28,7 @@ namespace heavymoons.core.AI
             if (name == null) name = state.Name;
             if (_states.ContainsKey(name)) throw new ArgumentException($"name already registered: {name}");
             _states[name] = state;
-            state.OnRegister(this, State);
+            state.OnRegister(this, state);
             if (State == null) State = state;
         }
 
@@ -80,19 +80,19 @@ namespace heavymoons.core.AI
             State = GetState(type);
         }
 
-        public bool Execute(IMachine machine = null, IState state = null)
+        public bool Execute(IMachine machine = null)
         {
             if (State == null) return false;
 
             Counter++;
             OnExecute(this, this);
 
-            var result = State.Execute(this, State);
+            var result = State.Execute(this);
 
             if (State.NextState != null)
             {
                 var nextState = State.NextState;
-                State.OnExit(this, nextState);
+                State.OnExit(this, State);
                 nextState.OnEnter(this, nextState);
                 State = nextState;
             }
@@ -104,7 +104,7 @@ namespace heavymoons.core.AI
         public StateEvent OnExitEvent;
         public StateEvent OnEnterEvent;
 
-        public void OnRegister(IMachine machine, IState state = null)
+        public void OnRegister(IMachine machine, IState state)
         {
             // 子ノードとして登録するステートマシンのBlackBoardは空である必要がある
             if (BlackBoard.HasRegistered) throw new InvalidOperationException($"BlackBoard already used");
@@ -126,7 +126,7 @@ namespace heavymoons.core.AI
             OnEnterEvent?.Invoke(machine, state);
         }
 
-        public void OnExecute(IMachine machine, IState state = null)
+        public void OnExecute(IMachine machine, IState state)
         {
             OnExecuteEvent?.Invoke(machine, state);
         }

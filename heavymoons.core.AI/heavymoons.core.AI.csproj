@@ -41,7 +41,8 @@
   </ItemGroup>
   <ItemGroup>
       <Compile Include="ActionNode.cs"/>
-      <Compile Include="BehaviorState.cs"/>
+      <Compile Include="BaseNode.cs"/>
+      <Compile Include="BehaviourState.cs"/>
       <Compile Include="BlackBoard.cs"/>
       <Compile Include="DecoratorNode.cs"/>
       <Compile Include="Delegates.cs"/>
