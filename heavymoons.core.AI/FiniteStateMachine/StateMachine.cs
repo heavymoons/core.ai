@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace heavymoons.core.AI.FiniteStateMachine
 {
@@ -62,16 +63,20 @@ namespace heavymoons.core.AI.FiniteStateMachine
 
         public bool Execute()
         {
+            Debug.WriteLine($"StateMachine Execute");
             Counter++;
+            Debug.WriteLine($"Counter: {Counter}");
             OnExecute(this);
 
             if (CurrentState == null) return false;
 
+            Debug.WriteLine($"CurrentState: {CurrentState}");
             var currentState = GetState(CurrentState);
             var result = currentState.Execute(this);
 
             if (NextState != null)
             {
+                Debug.WriteLine($"NextState: {NextState}");
                 var nextState = GetState(NextState);
                 currentState.OnExit(this);
                 CurrentState = NextState;
