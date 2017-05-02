@@ -26,8 +26,9 @@ namespace heavymoons.core.AI.FiniteStateMachine
 
         public void RegisterState(string name, IState state)
         {
+            if (state == null) throw new ArgumentNullException(nameof(state));
             if (_states.ContainsKey(name)) throw new ArgumentException($"name already registered: {name}");
-            _states[name] = state ?? throw new ArgumentNullException(nameof(state));
+            _states[name] = state;
             state.OnRegister(this);
             if (CurrentState == null) CurrentState = name;
         }
