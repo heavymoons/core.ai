@@ -14,7 +14,7 @@ namespace heavymoons.core.tests.AI
             Assert.True(approach.IsCurrentState("SwitchOff"));
             approach.Execute();
             Assert.True(approach.IsCurrentState("SwitchOff"));
-            approach.DataStore.SetValue("Switch", true);
+            approach.DataStorage.SetValue("Switch", true);
             approach.Execute();
             Assert.True(approach.IsCurrentState("SwitchOn"));
             approach.Execute();

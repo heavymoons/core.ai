@@ -9,7 +9,7 @@ namespace heavymoons.core.tests.AI.Switch
         {
             OnExecuteEvent += (machine, state) =>
             {
-                if (!machine.DataStore.GetValue<bool>(SwitchMachine.Switch))
+                if (!machine.DataStorage.GetValue<bool>(SwitchMachine.Switch))
                 {
                     machine.NextState = "SwitchOff";
                 }

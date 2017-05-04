@@ -48,7 +48,7 @@
     <Compile Include="BehaviourTree\SelectorNode.cs" />
     <Compile Include="BehaviourTree\SequencerNode.cs" />
     <Compile Include="BlackBoard\Component.cs" />
-    <Compile Include="BlackBoard\DataStore.cs" />
+    <Compile Include="BlackBoard\DataStorage.cs" />
     <Compile Include="BlackBoard\ReferenceComponent.cs" />
     <Compile Include="FiniteStateMachine\IState.cs" />
     <Compile Include="FiniteStateMachine\State.cs" />

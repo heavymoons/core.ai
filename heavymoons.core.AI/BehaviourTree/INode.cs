@@ -1,8 +1,10 @@
-﻿namespace heavymoons.core.AI.BehaviourTree
+﻿using heavymoons.core.AI.BlackBoard;
+
+namespace heavymoons.core.AI.BehaviourTree
 {
     public interface INode
     {
-        DataStore DataStore { get; }
+        DataStorage DataStorage { get; }
         string Name { get; }
         bool Execute(BehaviourMachine machine);
         void OnExecute(BehaviourMachine machine);

@@ -1,10 +1,12 @@
-﻿namespace heavymoons.core.AI.BehaviourTree
+﻿using heavymoons.core.AI.BlackBoard;
+
+namespace heavymoons.core.AI.BehaviourTree
 {
     public abstract class BaseNode : INode
     {
         public virtual string Name => this.GetType().Name;
 
-        public DataStore DataStore { get; } = new DataStore();
+        public DataStorage DataStorage { get; } = new DataStorage();
 
         public NodeEvent OnExecuteEvent;
 

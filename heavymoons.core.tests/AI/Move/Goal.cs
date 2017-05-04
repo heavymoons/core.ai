@@ -11,7 +11,7 @@ namespace heavymoons.core.tests.AI.Move
         {
             OnExecuteEvent += (machine, state) =>
             {
-                var status = machine.DataStore.GetValue<MoveStatus>(MoveMachine.Status);
+                var status = machine.DataStorage.GetValue<MoveStatus>(MoveMachine.Status);
                 status.Dx = status.Dx > 1 ? status.Dx - 1 : 0;
                 status.X += status.Dx;
                 Debug.WriteLine($"Goal Next X: {status.X} Dx: {status.Dx}");

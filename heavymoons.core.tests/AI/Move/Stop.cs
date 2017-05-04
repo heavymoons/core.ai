@@ -11,7 +11,7 @@ namespace heavymoons.core.tests.AI.Move
         {
             OnExecuteEvent += (machine, state) =>
             {
-                var playerStatus = machine.DataStore.GetValue<MoveStatus>(MoveMachine.Status);
+                var playerStatus = machine.DataStorage.GetValue<MoveStatus>(MoveMachine.Status);
 
                 if (!playerStatus.IsStop)
                 {

@@ -1,9 +1,11 @@
-﻿namespace heavymoons.core.AI.BehaviourTree
+﻿using heavymoons.core.AI.BlackBoard;
+
+namespace heavymoons.core.AI.BehaviourTree
 {
     public class BehaviourMachine
     {
         public ulong Counter { get; protected set; }
-        public DataStore DataStore { get; } = new DataStore();
+        public DataStorage DataStorage { get; } = new DataStorage();
 
         public INode Node { get; set; }
 

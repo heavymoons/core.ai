@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using heavymoons.core.AI.BlackBoard;
 
 namespace heavymoons.core.AI.FiniteStateMachine
 {
     public class StateMachine
     {
         public ulong Counter { get; protected set; }
-        public DataStore DataStore { get; } = new DataStore();
+        public DataStorage DataStorage { get; } = new DataStorage();
 
         private readonly Dictionary<string, IState> _states = new Dictionary<string, IState>();
 

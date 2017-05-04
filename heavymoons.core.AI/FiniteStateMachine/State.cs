@@ -1,4 +1,6 @@
-﻿namespace heavymoons.core.AI.FiniteStateMachine
+﻿using heavymoons.core.AI.BlackBoard;
+
+namespace heavymoons.core.AI.FiniteStateMachine
 {
     /// <summary>
     /// ステートマシンにおけるステートのベースクラス
@@ -7,7 +9,7 @@
     {
         public string Name => GetType().Name;
 
-        public DataStore DataStore { get; } = new DataStore();
+        public DataStorage DataStorage { get; } = new DataStorage();
 
         public virtual bool Execute(StateMachine machine)
         {

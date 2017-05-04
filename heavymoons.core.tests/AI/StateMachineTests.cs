@@ -18,17 +18,17 @@ namespace heavymoons.core.tests.AI
             Assert.True(machine.IsCurrentState("SwitchOff"));
             machine.Execute();
             Assert.True(machine.IsCurrentState("SwitchOff"));
-            machine.DataStore.SetValue(SwitchMachine.Switch, true);
+            machine.DataStorage.SetValue(SwitchMachine.Switch, true);
             machine.Execute();
             Assert.True(machine.IsCurrentState("SwitchOn"));
-            machine.DataStore.SetValue(SwitchMachine.Switch, false);
+            machine.DataStorage.SetValue(SwitchMachine.Switch, false);
             machine.Execute();
             Assert.True(machine.IsCurrentState("SwitchOff"));
-            machine.DataStore.SetValue(SwitchMachine.Switch, true);
+            machine.DataStorage.SetValue(SwitchMachine.Switch, true);
             machine.Execute();
             machine.Execute();
             Assert.True(machine.IsCurrentState("SwitchOn"));
-            machine.DataStore.SetValue(SwitchMachine.Switch, false);
+            machine.DataStorage.SetValue(SwitchMachine.Switch, false);
             machine.Execute();
             machine.Execute();
             Assert.True(machine.IsCurrentState("SwitchOff"));
@@ -44,12 +44,12 @@ namespace heavymoons.core.tests.AI
             var machine = new StateMachine();
             machine.OnExecuteEvent += (m) => { Debug.WriteLine($"Counter: {m.Counter}"); };
 
-            machine.DataStore.Register(onOffSwitch, false);
+            machine.DataStorage.Register(onOffSwitch, false);
 
             var offState = new State();
             offState.OnExecuteEvent += (m, s) =>
             {
-                if (m.DataStore.GetValue<bool>(onOffSwitch))
+                if (m.DataStorage.GetValue<bool>(onOffSwitch))
                 {
                     m.NextState = on;
                 }
@@ -59,7 +59,7 @@ namespace heavymoons.core.tests.AI
             var onState = new State();
             onState.OnExecuteEvent += (m, s) =>
             {
-                if (!m.DataStore.GetValue<bool>(onOffSwitch))
+                if (!m.DataStorage.GetValue<bool>(onOffSwitch))
                 {
                     m.NextState = off;
                 }
@@ -69,17 +69,17 @@ namespace heavymoons.core.tests.AI
             Assert.True(machine.IsCurrentState(off));
             machine.Execute();
             Assert.True(machine.IsCurrentState(off));
-            machine.DataStore.SetValue(onOffSwitch, true);
+            machine.DataStorage.SetValue(onOffSwitch, true);
             machine.Execute();
             Assert.True(machine.IsCurrentState(on));
-            machine.DataStore.SetValue(onOffSwitch, false);
+            machine.DataStorage.SetValue(onOffSwitch, false);
             machine.Execute();
             Assert.True(machine.IsCurrentState(off));
-            machine.DataStore.SetValue(onOffSwitch, true);
+            machine.DataStorage.SetValue(onOffSwitch, true);
             machine.Execute();
             machine.Execute();
             Assert.True(machine.IsCurrentState(on));
-            machine.DataStore.SetValue(onOffSwitch, false);
+            machine.DataStorage.SetValue(onOffSwitch, false);
             machine.Execute();
             machine.Execute();
             Assert.True(machine.IsCurrentState(off));
@@ -89,7 +89,7 @@ namespace heavymoons.core.tests.AI
         public void MoveTest()
         {
             var machine = new MoveMachine();
-            var status = machine.DataStore.GetValue<MoveStatus>();
+            var status = machine.DataStorage.GetValue<MoveStatus>();
             machine.Execute();
             Assert.True(machine.IsCurrentState("Stop"));
             Assert.False(status.IsGoal);

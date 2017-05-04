@@ -1,4 +1,4 @@
-﻿namespace heavymoons.core.AI
+﻿namespace heavymoons.core.AI.BlackBoard
 {
     /// <summary>
     /// スカラー型以外のパラメータを管理する内部クラス

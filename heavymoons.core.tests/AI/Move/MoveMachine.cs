@@ -11,7 +11,7 @@ namespace heavymoons.core.tests.AI.Move
 
         public MoveMachine()
         {
-            DataStore.Register(Status, new MoveStatus());
+            DataStorage.Register(Status, new MoveStatus());
             RegisterState("Stop", new Stop());
             RegisterState("Move", new Move());
             RegisterState("Goal", new Goal());

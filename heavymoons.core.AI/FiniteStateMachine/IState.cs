@@ -1,8 +1,10 @@
-﻿namespace heavymoons.core.AI.FiniteStateMachine
+﻿using heavymoons.core.AI.BlackBoard;
+
+namespace heavymoons.core.AI.FiniteStateMachine
 {
     public interface IState
     {
-        DataStore DataStore { get; }
+        DataStorage DataStorage { get; }
         string Name { get; }
         bool Execute(StateMachine machine);
         void OnExecute(StateMachine machine);

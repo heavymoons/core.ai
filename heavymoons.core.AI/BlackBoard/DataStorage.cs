@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace heavymoons.core.AI
+namespace heavymoons.core.AI.BlackBoard
 {
     /// <summary>
     /// 共有パラメーター置き場
     /// ステートマシン、ビヘイビアツリー内で共有するパラメータを保持する
     /// </summary>
-    public class DataStore
+    public class DataStorage
     {
         /// <summary>
         /// パラメータ保持用ディクショナリ
@@ -32,7 +32,13 @@ namespace heavymoons.core.AI
             _components[name] = new Component(value);
         }
 
-        public void Override(DataStore blackboard, string name)
+        /// <summary>
+        /// 他のDataStorageに保存されている値を参照する
+        /// </summary>
+        /// <param name="blackboard"></param>
+        /// <param name="name"></param>
+        /// <exception cref="ArgumentException"></exception>
+        public void ReferTo(DataStorage blackboard, string name)
         {
             if (_components.ContainsKey(name)) throw new ArgumentException($"already registered name: {name}");
 
