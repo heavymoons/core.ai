@@ -17,13 +17,13 @@ namespace heavymoons.core.tests.AI
             const string distanceToTower = "distance";
 
             var machine = new BehaviourMachine();
-            machine.DataStorage.Register(hitpoint, 100);
-            machine.DataStorage.Register(distanceToTower, 10);
+            machine.DataStorage[hitpoint] = 100;
+            machine.DataStorage[distanceToTower] = 10;
 
             machine.OnExecuteEvent += (m) =>
             {
-                var hp = m.DataStorage.GetValue<int>(hitpoint);
-                var distance = m.DataStorage.GetValue<int>(distanceToTower);
+                var hp = (int)m.DataStorage[hitpoint];
+                var distance = (int)m.DataStorage[distanceToTower];
                 Debug.WriteLine($"HP: {hp}");
                 Debug.WriteLine($"Distance: {distance}");
             };
@@ -40,13 +40,13 @@ namespace heavymoons.core.tests.AI
             {
                 Debug.WriteLine("近くの敵を攻撃");
 
-                var distance = m.DataStorage.GetValue<int>(distanceToTower);
+                var distance = (int)m.DataStorage[distanceToTower];
                 distance += 1;
-                m.DataStorage.SetValue(distanceToTower, distance);
+                m.DataStorage[distanceToTower] = distance;
 
-                var hp = m.DataStorage.GetValue<int>(hitpoint);
+                var hp = (int)m.DataStorage[hitpoint];
                 hp -= 5;
-                m.DataStorage.SetValue(hitpoint, hp);
+                m.DataStorage[hitpoint] = hp;
                 return true;
             };
             decoratorHp.Node = attackNearEnemy;
@@ -59,12 +59,12 @@ namespace heavymoons.core.tests.AI
 
             moveToNearTower.ActionCallback = (m, n) =>
             {
-                var distance = m.DataStorage.GetValue<int>(distanceToTower);
+                var distance = (int)m.DataStorage[distanceToTower];
                 if (distance <= 0) return true;
 
                 Debug.WriteLine("近くのタワーに移動");
                 distance--;
-                m.DataStorage.SetValue(distanceToTower, distance);
+                m.DataStorage[distanceToTower] = distance;
                 return true;
             };
 
@@ -75,12 +75,12 @@ namespace heavymoons.core.tests.AI
             {
                 Debug.WriteLine("待機");
 
-                var distance = m.DataStorage.GetValue<int>(distanceToTower);
+                var distance = (int)m.DataStorage[distanceToTower];
                 if (distance < 5)
                 {
-                    var hp = m.DataStorage.GetValue<int>(hitpoint);
+                    var hp = (int)m.DataStorage[hitpoint];
                     hp += 20;
-                    m.DataStorage.SetValue(hitpoint, hp);
+                    m.DataStorage[hitpoint] = hp;
                 }
 
                 return true;

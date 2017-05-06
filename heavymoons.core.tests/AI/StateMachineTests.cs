@@ -18,17 +18,17 @@ namespace heavymoons.core.tests.AI
             Assert.True(machine.IsCurrentState("SwitchOff"));
             machine.Execute();
             Assert.True(machine.IsCurrentState("SwitchOff"));
-            machine.DataStorage.SetValue(SwitchMachine.Switch, true);
+            machine.DataStorage[SwitchMachine.Switch] = true;
             machine.Execute();
             Assert.True(machine.IsCurrentState("SwitchOn"));
-            machine.DataStorage.SetValue(SwitchMachine.Switch, false);
+            machine.DataStorage[SwitchMachine.Switch] = false;
             machine.Execute();
             Assert.True(machine.IsCurrentState("SwitchOff"));
-            machine.DataStorage.SetValue(SwitchMachine.Switch, true);
+            machine.DataStorage[SwitchMachine.Switch] = true;
             machine.Execute();
             machine.Execute();
             Assert.True(machine.IsCurrentState("SwitchOn"));
-            machine.DataStorage.SetValue(SwitchMachine.Switch, false);
+            machine.DataStorage[SwitchMachine.Switch] = false;
             machine.Execute();
             machine.Execute();
             Assert.True(machine.IsCurrentState("SwitchOff"));
@@ -44,7 +44,7 @@ namespace heavymoons.core.tests.AI
             var machine = new StateMachine();
             machine.OnExecuteEvent += (m) => { Debug.WriteLine($"Counter: {m.Counter}"); };
 
-            machine.DataStorage.Register(onOffSwitch, false);
+            machine.DataStorage[onOffSwitch] = false;
 
             var offState = new State();
             offState.OnExecuteEvent += (m, s) =>
@@ -69,17 +69,17 @@ namespace heavymoons.core.tests.AI
             Assert.True(machine.IsCurrentState(off));
             machine.Execute();
             Assert.True(machine.IsCurrentState(off));
-            machine.DataStorage.SetValue(onOffSwitch, true);
+            machine.DataStorage[onOffSwitch] = true;
             machine.Execute();
             Assert.True(machine.IsCurrentState(on));
-            machine.DataStorage.SetValue(onOffSwitch, false);
+            machine.DataStorage[onOffSwitch] = false;
             machine.Execute();
             Assert.True(machine.IsCurrentState(off));
-            machine.DataStorage.SetValue(onOffSwitch, true);
+            machine.DataStorage[onOffSwitch] = true;
             machine.Execute();
             machine.Execute();
             Assert.True(machine.IsCurrentState(on));
-            machine.DataStorage.SetValue(onOffSwitch, false);
+            machine.DataStorage[onOffSwitch] = false;
             machine.Execute();
             machine.Execute();
             Assert.True(machine.IsCurrentState(off));

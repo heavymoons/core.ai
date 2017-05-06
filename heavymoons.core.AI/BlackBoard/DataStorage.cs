@@ -14,35 +14,25 @@ namespace heavymoons.core.AI.BlackBoard
         /// <summary>
         /// パラメータ保持用ディクショナリ
         /// </summary>
-        private readonly Dictionary<string, Component> _components = new Dictionary<string, Component>();
+        private readonly Dictionary<string, IComponent> _components = new Dictionary<string, IComponent>();
 
-        internal ReadOnlyDictionary<string, Component> Components => new ReadOnlyDictionary<string, Component>(
-            _components);
-
-        /// <summary>
-        /// パラメータを名前、値、型を使って登録する
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        /// <exception cref="ArgumentException"></exception>
-        public void Register(string name, object value)
+        public object this[string name]
         {
-            if (_components.ContainsKey(name)) throw new ArgumentException($"already registered name: {name}");
-
-            _components[name] = new Component(value);
+            get => GetValue(name);
+            set => SetValue(name, value);
         }
 
         /// <summary>
         /// 他のDataStorageに保存されている値を参照する
         /// </summary>
-        /// <param name="blackboard"></param>
+        /// <param name="dataStorage"></param>
         /// <param name="name"></param>
         /// <exception cref="ArgumentException"></exception>
-        public void ReferTo(DataStorage blackboard, string name)
+        public void ReferTo(DataStorage dataStorage, string name)
         {
             if (_components.ContainsKey(name)) throw new ArgumentException($"already registered name: {name}");
 
-            _components[name] = new ReferenceComponent(blackboard, name);
+            _components[name] = new ReferenceComponent(dataStorage, name);
         }
 
         /// <summary>
@@ -52,14 +42,17 @@ namespace heavymoons.core.AI.BlackBoard
         /// <param name="name"></param>
         /// <param name="value"></param>
         /// <exception cref="ArgumentException"></exception>
-        public void SetValue(string name, object value)
+        private void SetValue(string name, object value)
         {
             if (_components.ContainsKey(name))
             {
                 var component = _components[name];
                 component.Value = value;
             }
-            else throw new ArgumentException($"name:{name} not registered");
+            else
+            {
+                _components[name] = new Component(value);
+            }
         }
 
         /// <summary>
@@ -68,14 +61,14 @@ namespace heavymoons.core.AI.BlackBoard
         /// <param name="name"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public object GetValue(string name)
+        private object GetValue(string name)
         {
             if (_components.ContainsKey(name)) return _components[name].GetValue<object>();
             throw new ArgumentException($"name not registered: {name}");
         }
 
         /// <summary>
-        /// 登録されているパラメータ値を型指定して取得
+        /// 登録されているパラメータ値を型指定（＆チェック）して取得
         /// </summary>
         /// <param name="name"></param>
         /// <typeparam name="T"></typeparam>

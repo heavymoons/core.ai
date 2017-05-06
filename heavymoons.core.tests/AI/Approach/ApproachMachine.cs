@@ -19,16 +19,16 @@ namespace heavymoons.core.tests.AI.Approach
 
         public ApproachMachine()
         {
-            DataStorage.Register(PlayerPosition, new Point(10, 10));
-            DataStorage.Register(GoalPosition, new Point(0, 0));
-            DataStorage.Register(Switch, false);
+            DataStorage[PlayerPosition] = new Point(10, 10);
+            DataStorage[GoalPosition] = new Point(0, 0);
+            DataStorage[Switch] = false;
 
             var switchOffState = new State();
             RegisterState(SwitchOff, switchOffState);
             switchOffState.OnExecuteEvent = (machine, state) =>
             {
                 Debug.WriteLine($"SwitchOff");
-                if (machine.DataStorage.GetValue<bool>(Switch))
+                if ((bool)machine.DataStorage[Switch])
                 {
                     machine.NextState = SwitchOn;
                 }
@@ -55,8 +55,8 @@ namespace heavymoons.core.tests.AI.Approach
             moveDecorator.ConditionCallback = (machine, node) =>
             {
                 Debug.WriteLine($"move condition check");
-                var playerPosition = machine.DataStorage.GetValue<Point>(PlayerPosition);
-                var goalPosition = machine.DataStorage.GetValue<Point>(GoalPosition);
+                var playerPosition = (Point)machine.DataStorage[PlayerPosition];
+                var goalPosition = (Point)machine.DataStorage[GoalPosition];
                 Debug.WriteLine($"P:{playerPosition} G:{goalPosition}");
                 return !playerPosition.Equals(goalPosition);
             };
@@ -65,8 +65,8 @@ namespace heavymoons.core.tests.AI.Approach
             moveAction.ActionCallback = (machine, node) =>
             {
                 Debug.WriteLine($"Move");
-                var playerPosition = machine.DataStorage.GetValue<Point>(PlayerPosition);
-                var goalPosition = machine.DataStorage.GetValue<Point>(GoalPosition);
+                var playerPosition = (Point)machine.DataStorage[PlayerPosition];
+                var goalPosition = (Point)machine.DataStorage[GoalPosition];
                 var diffX = Math.Abs(playerPosition.X - goalPosition.X);
                 var diffY = Math.Abs(playerPosition.Y - goalPosition.Y);
                 if (diffX >= diffY)
@@ -77,31 +77,31 @@ namespace heavymoons.core.tests.AI.Approach
                 {
                     playerPosition.Y += playerPosition.Y > goalPosition.Y ? -1 : 1;
                 }
-                machine.DataStorage.SetValue(PlayerPosition, playerPosition);
+                machine.DataStorage[PlayerPosition] = playerPosition;
                 return true;
             };
 
             var teleportAction = new ActionNode();
-            teleportAction.DataStorage.Register(TeleportCounter, 10);
+            teleportAction.DataStorage[TeleportCounter] = 10;
             moveOrTeleportSelector.Nodes.Add(teleportAction);
             teleportAction.ActionCallback = (machine, node) =>
             {
                 Debug.WriteLine($"teleport");
-                var teleportCounter = node.DataStorage.GetValue<int>(TeleportCounter);
+                var teleportCounter = (int)node.DataStorage[TeleportCounter];
                 teleportCounter--;
-                node.DataStorage.SetValue(TeleportCounter, teleportCounter);
+                node.DataStorage[TeleportCounter] = teleportCounter;
                 Debug.WriteLine($"teleport counter: {teleportCounter}");
                 if (teleportCounter > 0)
                 {
                     return false;
                 }
 
-                var playerPosition = machine.DataStorage.GetValue<Point>(PlayerPosition);
+                var playerPosition = (Point) machine.DataStorage[PlayerPosition];
                 playerPosition.X = new Random().Next(-10, 10);
                 playerPosition.Y = new Random().Next(-10, 10);
-                machine.DataStorage.SetValue(PlayerPosition, playerPosition);
+                machine.DataStorage[PlayerPosition] = playerPosition;
 
-                node.DataStorage.SetValue(TeleportCounter, 10);
+                node.DataStorage[TeleportCounter] = 10;
                 Debug.WriteLine($"teleport to {playerPosition}");
                 return true;
             };

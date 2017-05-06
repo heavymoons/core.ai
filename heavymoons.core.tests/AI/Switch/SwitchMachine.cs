@@ -11,7 +11,7 @@ namespace heavymoons.core.tests.AI.Switch
 
         public SwitchMachine()
         {
-            DataStorage.Register(Switch, false);
+            DataStorage[Switch] = false;
             RegisterState("SwitchOff", new SwitchOff());
             RegisterState("SwitchOn", new SwitchOn());
 

@@ -3,30 +3,35 @@
     /// <summary>
     /// 他のDataStoreの登録データを参照するコンポーネント
     /// </summary>
-    internal class ReferenceComponent : Component
+    internal class ReferenceComponent : IComponent
     {
-        private readonly DataStorage _blackboard;
+        private readonly DataStorage _dataStorage;
         private readonly string _name;
 
-        public override object Value
+        public object Value
         {
-            get { return _blackboard.GetValue(_name); }
-            set { _blackboard.SetValue(_name, value); }
+            get { return GetValue(); }
+            set { SetValue(value); }
         }
 
-        public override T GetValue<T>()
+        public object GetValue()
         {
-            return _blackboard.GetValue<T>(_name);
+            return _dataStorage[_name];
         }
 
-        public override void SetValue(object value)
+        public T GetValue<T>()
         {
-            _blackboard.SetValue(_name, value);
+            return _dataStorage.GetValue<T>(_name);
         }
 
-        public ReferenceComponent(DataStorage blackboard, string name) : base()
+        public void SetValue(object value)
         {
-            _blackboard = blackboard;
+            _dataStorage[_name] = value;
+        }
+
+        public ReferenceComponent(DataStorage dataStorage, string name)
+        {
+            _dataStorage = dataStorage;
             _name = name;
         }
     }
