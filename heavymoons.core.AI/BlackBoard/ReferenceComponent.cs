@@ -1,11 +1,13 @@
-﻿namespace heavymoons.core.AI.BlackBoard
+﻿using System;
+
+namespace heavymoons.core.AI.BlackBoard
 {
     /// <summary>
     /// 他のDataStoreの登録データを参照するコンポーネント
     /// </summary>
     internal class ReferenceComponent : IComponent
     {
-        private readonly DataStorage _dataStorage;
+        private DataStorage _dataStorage;
         private readonly string _name;
 
         public object Value

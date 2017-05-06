@@ -7,8 +7,6 @@ namespace heavymoons.core.AI.FiniteStateMachine
     /// </summary>
     public class State : IState
     {
-        public string Name => GetType().Name;
-
         public DataStorage DataStorage { get; } = new DataStorage();
 
         public virtual bool Execute(StateMachine machine)

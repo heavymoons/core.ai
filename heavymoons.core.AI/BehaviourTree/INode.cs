@@ -5,8 +5,7 @@ namespace heavymoons.core.AI.BehaviourTree
     public interface INode
     {
         DataStorage DataStorage { get; }
-        string Name { get; }
-        bool Execute(BehaviourMachine machine);
-        void OnExecute(BehaviourMachine machine);
+        bool Execute(BehaviourMachine machine, INode parentNode);
+        void OnExecute(BehaviourMachine machine, INode parentNode);
     }
 }

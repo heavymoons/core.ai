@@ -4,10 +4,10 @@
     {
         public NodeCallback ActionCallback;
 
-        public override bool Execute(BehaviourMachine machine)
+        public override bool Execute(BehaviourMachine machine, INode parentNode)
         {
-            OnExecute(machine);
-            return ActionCallback.Invoke(machine, this);
+            OnExecute(machine, parentNode);
+            return ActionCallback.Invoke(machine, this, parentNode);
         }
     }
 }

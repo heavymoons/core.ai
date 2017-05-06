@@ -16,6 +16,8 @@ namespace heavymoons.core.AI.BlackBoard
         /// </summary>
         private readonly Dictionary<string, IComponent> _components = new Dictionary<string, IComponent>();
 
+        public ReadOnlyCollection<string> Names => _components.Keys.ToList().AsReadOnly();
+
         /// <summary>
         /// パラメータをインデックスプロパティとして取得
         /// </summary>
@@ -24,6 +26,16 @@ namespace heavymoons.core.AI.BlackBoard
         {
             get { return GetValue(name);}
             set { SetValue(name, value);}
+        }
+
+        ~DataStorage()
+        {
+            Reset();
+        }
+
+        public void Reset()
+        {
+            _components.Clear();
         }
 
         /// <summary>

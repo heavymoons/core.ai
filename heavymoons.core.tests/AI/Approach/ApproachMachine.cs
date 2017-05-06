@@ -52,7 +52,7 @@ namespace heavymoons.core.tests.AI.Approach
 
             var moveDecorator = new DecoratorNode();
             moveOrTeleportSelector.Nodes.Add(moveDecorator);
-            moveDecorator.ConditionCallback = (machine, node) =>
+            moveDecorator.ConditionCallback = (machine, node, parentNode) =>
             {
                 Debug.WriteLine($"move condition check");
                 var playerPosition = (Point)machine.DataStorage[PlayerPosition];
@@ -62,7 +62,7 @@ namespace heavymoons.core.tests.AI.Approach
             };
             var moveAction = new ActionNode();
             moveDecorator.Node = moveAction;
-            moveAction.ActionCallback = (machine, node) =>
+            moveAction.ActionCallback = (machine, node, parentNode) =>
             {
                 Debug.WriteLine($"Move");
                 var playerPosition = (Point)machine.DataStorage[PlayerPosition];
@@ -84,7 +84,7 @@ namespace heavymoons.core.tests.AI.Approach
             var teleportAction = new ActionNode();
             teleportAction.DataStorage[TeleportCounter] = 10;
             moveOrTeleportSelector.Nodes.Add(teleportAction);
-            teleportAction.ActionCallback = (machine, node) =>
+            teleportAction.ActionCallback = (machine, node, parentNode) =>
             {
                 Debug.WriteLine($"teleport");
                 var teleportCounter = (int)node.DataStorage[TeleportCounter];

@@ -6,6 +6,5 @@
         T GetValue<T>();
         object GetValue();
         void SetValue(object value);
-
     }
 }

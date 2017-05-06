@@ -22,7 +22,7 @@ namespace heavymoons.core.AI.BehaviourTree
             OnExecute(this);
             if (Node == null) return false;
 
-            return Node.Execute(this);
+            return Node.Execute(this, null);
         }
     }
 }
