@@ -16,10 +16,14 @@ namespace heavymoons.core.AI.BlackBoard
         /// </summary>
         private readonly Dictionary<string, IComponent> _components = new Dictionary<string, IComponent>();
 
+        /// <summary>
+        /// パラメータをインデックスプロパティとして取得
+        /// </summary>
+        /// <param name="name"></param>
         public object this[string name]
         {
-            get => GetValue(name);
-            set => SetValue(name, value);
+            get { return GetValue(name);}
+            set { SetValue(name, value);}
         }
 
         /// <summary>

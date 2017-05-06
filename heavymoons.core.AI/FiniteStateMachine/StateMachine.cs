@@ -13,8 +13,6 @@ namespace heavymoons.core.AI.FiniteStateMachine
 
         private readonly Dictionary<string, IState> _states = new Dictionary<string, IState>();
 
-        public ReadOnlyDictionary<string, IState> States => new ReadOnlyDictionary<string, IState>(_states);
-
         public string CurrentState { get; private set; } = null;
 
         public string NextState { get; set; } = null;
