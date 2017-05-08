@@ -51,6 +51,7 @@
     <Compile Include="AI\Move\MoveMachine.cs" />
     <Compile Include="AI\Move\MoveStatus.cs" />
     <Compile Include="AI\Move\Stop.cs" />
+    <Compile Include="AI\StateInStateTests.cs" />
     <Compile Include="AI\StateMachineTests.cs" />
     <Compile Include="AI\Switch\SwitchMachine.cs" />
     <Compile Include="AI\Switch\SwitchOff.cs" />

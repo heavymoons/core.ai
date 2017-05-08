@@ -11,7 +11,7 @@ namespace heavymoons.core.AI.FiniteStateMachine
         public ulong Counter { get; protected set; }
         public DataStorage DataStorage { get; } = new DataStorage();
 
-        private readonly Dictionary<string, IState> _states = new Dictionary<string, IState>();
+        private readonly Dictionary<string, State> _states = new Dictionary<string, State>();
 
         public string CurrentState { get; private set; } = null;
 
@@ -19,12 +19,15 @@ namespace heavymoons.core.AI.FiniteStateMachine
 
         public StateMachineEvent OnExecuteEvent;
 
+        private StateMachine _parentStateMachine = null;
+        public StateMachine ParentStateMachine => _parentStateMachine;
+
         public void OnExecute(StateMachine machine)
         {
             OnExecuteEvent?.Invoke(this);
         }
 
-        public void RegisterState(string name, IState state)
+        public void RegisterState(string name, State state)
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
             if (_states.ContainsKey(name)) throw new ArgumentException($"name already registered: {name}");
@@ -38,7 +41,7 @@ namespace heavymoons.core.AI.FiniteStateMachine
             _states.Remove(name);
         }
 
-        public IState GetState(string name)
+        public State GetState(string name)
         {
             if (!_states.ContainsKey(name)) throw new ArgumentException($"name not registered: {name}");
             return _states[name];
@@ -60,8 +63,10 @@ namespace heavymoons.core.AI.FiniteStateMachine
             CurrentState = name;
         }
 
-        public bool Execute()
+        public bool Execute(StateMachine parentMachine = null)
         {
+            _parentStateMachine = parentMachine;
+
             Debug.WriteLine($"StateMachine Execute");
             Counter++;
             Debug.WriteLine($"Counter: {Counter}");
