@@ -36,6 +36,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\..\..\..\..\..\..\Library\Frameworks\Mono.framework\Versions\5.0.0\lib\mono\2.0-api\System.Drawing.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +58,8 @@
     <Compile Include="FiniteStateMachine\State.cs" />
     <Compile Include="FiniteStateMachine\StateMachine.cs" />
     <Compile Include="FiniteStateMachine\Delegates.cs" />
+    <Compile Include="PathFinding\PriorityQueue.cs" />
+    <Compile Include="PathFinding\SpatialAStar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
