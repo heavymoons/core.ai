@@ -48,7 +48,7 @@ namespace heavymoons.core.tests.AI.Approach
             };
 
             var moveOrTeleportSelector = new SelectorNode();
-            behaviourMachine.Node = moveOrTeleportSelector;
+            behaviourMachine.RegisterRootNode(moveOrTeleportSelector);
 
             var moveDecorator = new DecoratorNode();
             moveOrTeleportSelector.Nodes.Add(moveDecorator);

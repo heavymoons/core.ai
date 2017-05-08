@@ -29,7 +29,7 @@ namespace heavymoons.core.tests.AI
             };
 
             var selector = new SelectorNode();
-            machine.Node = selector;
+            machine.RegisterRootNode(selector);
 
             var decoratorHp = new DecoratorNode();
             selector.Nodes.Add(decoratorHp);
