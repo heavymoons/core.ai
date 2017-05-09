@@ -12,8 +12,8 @@ namespace heavymoons.core.tests.AI.Switch
         public SwitchMachine()
         {
             DataStorage[Switch] = false;
-            RegisterState("SwitchOff", new SwitchOff());
-            RegisterState("SwitchOn", new SwitchOn());
+            this["SwitchOff"] = new SwitchOff();
+            this["SwitchOn"] = new SwitchOn();
 
             OnExecuteEvent += (machine) => { Debug.WriteLine($"Counter: {machine.Counter}"); };
         }

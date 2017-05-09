@@ -54,7 +54,7 @@ namespace heavymoons.core.tests.AI
                     m.NextStateName = on;
                 }
             };
-            machine.RegisterState(off, offState);
+            machine[off] = offState;
 
             var onState = new State();
             onState.OnExecuteEvent += (m, s) =>
@@ -64,7 +64,7 @@ namespace heavymoons.core.tests.AI
                     m.NextStateName = off;
                 }
             };
-            machine.RegisterState(on, onState);
+            machine[on] = onState;
 
             Assert.True(machine.IsCurrentState(off));
             machine.Execute();

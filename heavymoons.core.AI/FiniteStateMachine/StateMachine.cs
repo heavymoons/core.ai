@@ -19,6 +19,11 @@ namespace heavymoons.core.AI.FiniteStateMachine
 
         public StateMachineEvent OnExecuteEvent;
 
+        /// <summary>
+        /// ビヘイビアツリーのノードとしてステートマシンが動作するときのリザルト
+        /// </summary>
+        public bool NodeResult { get; set; }
+
         private StateMachine _parentStateMachine = null;
         public StateMachine ParentStateMachine => _parentStateMachine;
 
@@ -27,8 +32,21 @@ namespace heavymoons.core.AI.FiniteStateMachine
             OnExecuteEvent?.Invoke(this);
         }
 
+        public State this[string name]
+        {
+            get
+            {
+                return GetState(name);
+            }
+            set
+            {
+                RegisterState(name, value);
+            }
+        }
+
         public void RegisterState(string name, State state)
         {
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
             if (state == null) throw new ArgumentNullException(nameof(state));
             if (_states.ContainsKey(name)) throw new ArgumentException($"name already registered: {name}");
             _states[name] = state;
@@ -67,7 +85,7 @@ namespace heavymoons.core.AI.FiniteStateMachine
             }
             else
             {
-                if (CurrentStateName != null)
+                if (!string.IsNullOrEmpty(CurrentStateName))
                 {
                     var currentState = GetState(CurrentStateName);
                     currentState.OnExit(this);
@@ -81,19 +99,20 @@ namespace heavymoons.core.AI.FiniteStateMachine
         public bool Execute(StateMachine parentMachine = null)
         {
             _parentStateMachine = parentMachine;
+            NodeResult = false;
 
             Debug.WriteLine($"StateMachine Execute");
             Counter++;
             Debug.WriteLine($"Counter: {Counter}");
             OnExecute(this);
 
-            if (CurrentStateName == null) return false;
+            if (CurrentStateName == null) return NodeResult;
 
             Debug.WriteLine($"CurrentState: {CurrentStateName}");
             var currentState = GetState(CurrentStateName);
-            var result = currentState.Execute(this);
+            currentState.Execute(this);
 
-            if (NextStateName != null)
+            if (!string.IsNullOrEmpty(NextStateName))
             {
                 Debug.WriteLine($"NextState: {NextStateName}");
                 var nextState = GetState(NextStateName);
@@ -102,7 +121,7 @@ namespace heavymoons.core.AI.FiniteStateMachine
                 NextStateName = null;
                 nextState.OnEnter(this);
             }
-            return result;
+            return NodeResult;
         }
     }
 }

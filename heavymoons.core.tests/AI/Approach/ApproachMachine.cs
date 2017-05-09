@@ -24,7 +24,7 @@ namespace heavymoons.core.tests.AI.Approach
             DataStorage[Switch] = false;
 
             var switchOffState = new State();
-            RegisterState(SwitchOff, switchOffState);
+            this[SwitchOff] = switchOffState;
             switchOffState.OnExecuteEvent = (machine, state) =>
             {
                 Debug.WriteLine($"SwitchOff");
@@ -35,7 +35,7 @@ namespace heavymoons.core.tests.AI.Approach
             };
 
             var switchOnState = new State();
-            RegisterState(SwitchOn, switchOnState);
+            this[SwitchOn] = switchOnState;
 
             var behaviourMachine = new BehaviourMachine();
             behaviourMachine.DataStorage.ReferTo(DataStorage, PlayerPosition);

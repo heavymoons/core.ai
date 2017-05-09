@@ -12,9 +12,9 @@ namespace heavymoons.core.tests.AI.Move
         public MoveMachine()
         {
             DataStorage[Status] = new MoveStatus();
-            RegisterState("Stop", new Stop());
-            RegisterState("Move", new Move());
-            RegisterState("Goal", new Goal());
+            this["Stop"] = new Stop();
+            this["Move"] = new Move();
+            this["Goal"] = new Goal();
 
             OnExecuteEvent += (machine) => { Debug.WriteLine($"Counter: {machine.Counter}"); };
         }

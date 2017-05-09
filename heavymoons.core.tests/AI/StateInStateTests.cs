@@ -18,7 +18,7 @@ namespace heavymoons.core.tests.AI
                     Console.WriteLine($"on");
                 }
             };
-            machine.RegisterState("on", on);
+            machine["on"] = on;
             var off = new State()
             {
                 OnEnterEvent = (m, s) =>
@@ -39,7 +39,7 @@ namespace heavymoons.core.tests.AI
                 }
             };
             off.DataStorage["counter"] = 10;
-            machine.RegisterState("off", off);
+            machine["off"] = off;
             machine.ChangeState("off");
 
             var machine2 = new StateMachine();
@@ -66,7 +66,7 @@ namespace heavymoons.core.tests.AI
                 }
             };
 
-            machine2.RegisterState("on", on2);
+            machine2["on"] = on2;
             var off2 = new State()            {
                 OnEnterEvent = (m, s) =>
                 {
@@ -86,7 +86,7 @@ namespace heavymoons.core.tests.AI
                 }
             };
             off2.DataStorage["counter"] = 10;
-            machine2.RegisterState("off", off2);
+            machine2["off"] = off2;
             machine2.ChangeState("off");
 
             Assert.AreEqual("off", machine.CurrentStateName);

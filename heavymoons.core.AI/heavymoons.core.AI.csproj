@@ -50,6 +50,7 @@
     <Compile Include="BehaviourTree\INode.cs" />
     <Compile Include="BehaviourTree\SelectorNode.cs" />
     <Compile Include="BehaviourTree\SequencerNode.cs" />
+    <Compile Include="BehaviourTree\StateMachineNode.cs" />
     <Compile Include="BlackBoard\Component.cs" />
     <Compile Include="BlackBoard\DataStorage.cs" />
     <Compile Include="BlackBoard\IComponent.cs" />

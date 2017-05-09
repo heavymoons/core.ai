@@ -10,15 +10,14 @@ namespace heavymoons.core.AI.FiniteStateMachine
     {
         public DataStorage DataStorage { get; } = new DataStorage();
 
-        public bool Execute(StateMachine machine)
+        public void Execute(StateMachine machine)
         {
             OnExecute(machine);
             StateMachine?.Execute(machine);
             if (BehaviourMachine != null)
             {
-                return BehaviourMachine.Execute(machine);
+                machine.NodeResult = BehaviourMachine.Execute(machine);
             }
-            return true;
         }
 
         public StateEvent OnRegisterEvent;
