@@ -30,7 +30,7 @@ namespace heavymoons.core.tests.AI.Approach
                 Debug.WriteLine($"SwitchOff");
                 if ((bool)machine.DataStorage[Switch])
                 {
-                    machine.NextState = SwitchOn;
+                    machine.NextStateName = SwitchOn;
                 }
             };
 

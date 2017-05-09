@@ -13,9 +13,9 @@ namespace heavymoons.core.AI.FiniteStateMachine
 
         private readonly Dictionary<string, State> _states = new Dictionary<string, State>();
 
-        public string CurrentState { get; private set; } = null;
+        public string CurrentStateName { get; private set; } = null;
 
-        public string NextState { get; set; } = null;
+        public string NextStateName { get; set; } = null;
 
         public StateMachineEvent OnExecuteEvent;
 
@@ -33,7 +33,7 @@ namespace heavymoons.core.AI.FiniteStateMachine
             if (_states.ContainsKey(name)) throw new ArgumentException($"name already registered: {name}");
             _states[name] = state;
             state.OnRegister(this);
-            if (CurrentState == null) CurrentState = name;
+            if (CurrentStateName == null) CurrentStateName = name;
         }
 
         public void UnregisterState(string name)
@@ -49,18 +49,33 @@ namespace heavymoons.core.AI.FiniteStateMachine
 
         public bool IsCurrentState(string name)
         {
-            return CurrentState == name;
+            return CurrentStateName == name;
         }
 
         /// <summary>
-        /// ステート変更イベントなどを起こさずにステートを変更する
+        /// ステートを変更する
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="withoutEvent"></param>
         /// <exception cref="ArgumentException"></exception>
-        public void ForceChangeState(string name)
+        public void ChangeState(string name, bool withoutEvent = true)
         {
             if (!_states.ContainsKey(name)) throw new ArgumentException($"name not registered: {name}");
-            CurrentState = name;
+            if (withoutEvent)
+            {
+                CurrentStateName = name;
+            }
+            else
+            {
+                if (CurrentStateName != null)
+                {
+                    var currentState = GetState(CurrentStateName);
+                    currentState.OnExit(this);
+                }
+                CurrentStateName = name;
+                var nextState = GetState(CurrentStateName);
+                nextState.OnEnter(this);
+            }
         }
 
         public bool Execute(StateMachine parentMachine = null)
@@ -72,19 +87,19 @@ namespace heavymoons.core.AI.FiniteStateMachine
             Debug.WriteLine($"Counter: {Counter}");
             OnExecute(this);
 
-            if (CurrentState == null) return false;
+            if (CurrentStateName == null) return false;
 
-            Debug.WriteLine($"CurrentState: {CurrentState}");
-            var currentState = GetState(CurrentState);
+            Debug.WriteLine($"CurrentState: {CurrentStateName}");
+            var currentState = GetState(CurrentStateName);
             var result = currentState.Execute(this);
 
-            if (NextState != null)
+            if (NextStateName != null)
             {
-                Debug.WriteLine($"NextState: {NextState}");
-                var nextState = GetState(NextState);
+                Debug.WriteLine($"NextState: {NextStateName}");
+                var nextState = GetState(NextStateName);
                 currentState.OnExit(this);
-                CurrentState = NextState;
-                NextState = null;
+                CurrentStateName = NextStateName;
+                NextStateName = null;
                 nextState.OnEnter(this);
             }
             return result;

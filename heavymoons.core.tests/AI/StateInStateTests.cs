@@ -34,13 +34,13 @@ namespace heavymoons.core.tests.AI
                     Console.WriteLine($"counter = {counter}");
                     if (counter <= 0)
                     {
-                        m.NextState = "on";
+                        m.NextStateName = "on";
                     }
                 }
             };
             off.DataStorage["counter"] = 10;
             machine.RegisterState("off", off);
-            machine.ForceChangeState("off");
+            machine.ChangeState("off");
 
             var machine2 = new StateMachine();
             on.StateMachine = machine2;
@@ -60,8 +60,8 @@ namespace heavymoons.core.tests.AI
                     Console.WriteLine($"counter = {counter}");
                     if (counter <= 0)
                     {
-                        m.ParentStateMachine.NextState = "off";
-                        m.NextState = "off";
+                        m.ParentStateMachine.NextStateName = "off";
+                        m.NextStateName = "off";
                     }
                 }
             };
@@ -81,40 +81,40 @@ namespace heavymoons.core.tests.AI
                     Console.WriteLine($"counter = {counter}");
                     if (counter <= 0)
                     {
-                        m.NextState = "on";
+                        m.NextStateName = "on";
                     }
                 }
             };
             off2.DataStorage["counter"] = 10;
             machine2.RegisterState("off", off2);
-            machine2.ForceChangeState("off");
+            machine2.ChangeState("off");
 
-            Assert.AreEqual("off", machine.CurrentState);
-            Assert.AreEqual("off", machine2.CurrentState);
+            Assert.AreEqual("off", machine.CurrentStateName);
+            Assert.AreEqual("off", machine2.CurrentStateName);
             for (var i = 0; i < 10; i++)
             {
                 machine.Execute();
             }
-            Assert.AreEqual("on", machine.CurrentState);
-            Assert.AreEqual("off", machine2.CurrentState);
+            Assert.AreEqual("on", machine.CurrentStateName);
+            Assert.AreEqual("off", machine2.CurrentStateName);
             for (var i = 0; i < 10; i++)
             {
                 machine.Execute();
             }
-            Assert.AreEqual("on", machine.CurrentState);
-            Assert.AreEqual("on", machine2.CurrentState);
+            Assert.AreEqual("on", machine.CurrentStateName);
+            Assert.AreEqual("on", machine2.CurrentStateName);
             for (var i = 0; i < 10; i++)
             {
                 machine.Execute();
             }
-            Assert.AreEqual("off", machine.CurrentState);
-            Assert.AreEqual("off", machine2.CurrentState);
+            Assert.AreEqual("off", machine.CurrentStateName);
+            Assert.AreEqual("off", machine2.CurrentStateName);
             for (var i = 0; i < 10; i++)
             {
                 machine.Execute();
             }
-            Assert.AreEqual("on", machine.CurrentState);
-            Assert.AreEqual("off", machine2.CurrentState);
+            Assert.AreEqual("on", machine.CurrentStateName);
+            Assert.AreEqual("off", machine2.CurrentStateName);
         }
     }
 }

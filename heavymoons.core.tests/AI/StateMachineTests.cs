@@ -51,7 +51,7 @@ namespace heavymoons.core.tests.AI
             {
                 if (m.DataStorage.GetValue<bool>(onOffSwitch))
                 {
-                    m.NextState = on;
+                    m.NextStateName = on;
                 }
             };
             machine.RegisterState(off, offState);
@@ -61,7 +61,7 @@ namespace heavymoons.core.tests.AI
             {
                 if (!m.DataStorage.GetValue<bool>(onOffSwitch))
                 {
-                    m.NextState = off;
+                    m.NextStateName = off;
                 }
             };
             machine.RegisterState(on, onState);

@@ -18,11 +18,11 @@ namespace heavymoons.core.tests.AI.Move
 
                 if (status.IsGoal)
                 {
-                    machine.NextState = "Goal";
+                    machine.NextStateName = "Goal";
                 }
                 else if (status.IsStop)
                 {
-                    machine.NextState = "Stop";
+                    machine.NextStateName = "Stop";
                 }
             };
 

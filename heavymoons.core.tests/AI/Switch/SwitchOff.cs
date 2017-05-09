@@ -11,7 +11,7 @@ namespace heavymoons.core.tests.AI.Switch
             {
                 if (machine.DataStorage.GetValue<bool>(SwitchMachine.Switch))
                 {
-                    machine.NextState = "SwitchOn";
+                    machine.NextStateName = "SwitchOn";
                 }
             };
         }

@@ -15,7 +15,7 @@ namespace heavymoons.core.tests.AI.Move
 
                 if (!playerStatus.IsStop)
                 {
-                    machine.NextState = "Move";
+                    machine.NextStateName = "Move";
                 }
             };
 
