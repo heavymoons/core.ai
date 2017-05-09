@@ -32,11 +32,11 @@ namespace heavymoons.core.tests.AI
             machine.RegisterRootNode(selector);
 
             var decoratorHp = new DecoratorNode();
-            selector.Nodes.Add(decoratorHp);
+            selector.ChildNodes.Add(decoratorHp);
 
-            decoratorHp.ConditionCallback = (m, n, pn) => m.DataStorage.GetValue<int>(hitpoint) > 5;
+            decoratorHp.ConditionCallback = (m, n) => m.DataStorage.GetValue<int>(hitpoint) > 5;
             var attackNearEnemy = new ActionNode();
-            attackNearEnemy.ActionCallback = (m, n, pn) =>
+            attackNearEnemy.ActionCallback = (m, n) =>
             {
                 Debug.WriteLine("近くの敵を攻撃");
 
@@ -49,15 +49,15 @@ namespace heavymoons.core.tests.AI
                 m.DataStorage[hitpoint] = hp;
                 return true;
             };
-            decoratorHp.Node = attackNearEnemy;
+            decoratorHp.ChildNode = attackNearEnemy;
 
             var sequencer = new SequencerNode();
-            selector.Nodes.Add(sequencer);
+            selector.ChildNodes.Add(sequencer);
 
             var moveToNearTower = new ActionNode();
-            sequencer.Nodes.Add(moveToNearTower);
+            sequencer.ChildNodes.Add(moveToNearTower);
 
-            moveToNearTower.ActionCallback = (m, n, pn) =>
+            moveToNearTower.ActionCallback = (m, n) =>
             {
                 var distance = (int)m.DataStorage[distanceToTower];
                 if (distance <= 0) return true;
@@ -69,9 +69,9 @@ namespace heavymoons.core.tests.AI
             };
 
             var wait = new ActionNode();
-            sequencer.Nodes.Add(wait);
+            sequencer.ChildNodes.Add(wait);
 
-            wait.ActionCallback = (m, n, pn) =>
+            wait.ActionCallback = (m, n) =>
             {
                 Debug.WriteLine("待機");
 

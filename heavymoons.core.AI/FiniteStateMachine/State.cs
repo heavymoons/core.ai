@@ -13,10 +13,7 @@ namespace heavymoons.core.AI.FiniteStateMachine
         public bool Execute(StateMachine machine)
         {
             OnExecute(machine);
-            if (StateMachine != null)
-            {
-                StateMachine.Execute(machine);
-            }
+            StateMachine?.Execute(machine);
             if (BehaviourMachine != null)
             {
                 return BehaviourMachine.Execute(machine);

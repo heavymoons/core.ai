@@ -6,8 +6,8 @@
 
         public override bool Execute(BehaviourMachine machine, INode parentNode)
         {
-            OnExecute(machine, parentNode);
-            return ActionCallback.Invoke(machine, this, parentNode);
+            base.Execute(machine, parentNode);
+            return ActionCallback.Invoke(machine, this);
         }
     }
 }

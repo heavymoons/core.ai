@@ -6,6 +6,6 @@ namespace heavymoons.core.AI.BehaviourTree
     {
         DataStorage DataStorage { get; }
         bool Execute(BehaviourMachine machine, INode parentNode);
-        void OnExecute(BehaviourMachine machine, INode parentNode);
+        void OnExecute(BehaviourMachine machine);
     }
 }

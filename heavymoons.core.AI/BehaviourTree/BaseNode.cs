@@ -7,6 +7,8 @@ namespace heavymoons.core.AI.BehaviourTree
     public abstract class BaseNode : INode
     {
         public DataStorage DataStorage { get; private set; } = new DataStorage();
+        private INode _parentNode;
+        public INode ParentNode => _parentNode;
 
         public void ReplaceDataStorage(DataStorage dataStorage)
         {
@@ -17,11 +19,16 @@ namespace heavymoons.core.AI.BehaviourTree
 
         public NodeEvent OnExecuteEvent;
 
-        public abstract bool Execute(BehaviourMachine machine, INode parentNode);
-
-        public void OnExecute(BehaviourMachine machine, INode parentNode)
+        public virtual bool Execute(BehaviourMachine machine, INode parentNode)
         {
-            OnExecuteEvent?.Invoke(machine, this, parentNode);
+            _parentNode = parentNode;
+            OnExecute(machine);
+            return false;
+        }
+
+        public void OnExecute(BehaviourMachine machine)
+        {
+            OnExecuteEvent?.Invoke(machine, this);
         }
     }
 }
